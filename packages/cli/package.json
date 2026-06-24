@@ -1,0 +1,20 @@
+{
+  "name": "@verdictci/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "verdictci": "./dist/index.js"
+  },
+  "dependencies": {
+    "@verdictci/core": "workspace:*",
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json --noEmit false",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "verdictci",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=11.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "docs:check": "node scripts/docs-check.mjs",
+    "lint": "biome check .",
+    "test": "vitest run",
+    "test:e2e": "vitest run packages/cli/test",
+    "typecheck": "pnpm -r typecheck",
+    "verdictci": "tsx packages/cli/src/index.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.7",
+    "@types/node": "^24.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.13"
+  }
+}
