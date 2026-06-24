@@ -51,6 +51,7 @@ Read these documents in order:
 7. [Implementation roadmap](docs/implementation/roadmap.md)
 8. [Codex workflow](docs/agentic/codex-workflow.md)
 9. [Acceptance criteria](docs/qa/acceptance-criteria.md)
+10. [Project skills](docs/agentic/project-skills.md)
 
 For implementation work, start Codex from the repository root and ask it to read `AGENTS.md` first.
 
@@ -128,6 +129,7 @@ docs/
   templates/
   qa/
 .github/workflows/docs-checks.yml
+.codex/skills/
 ```
 
 ## Immediate next action

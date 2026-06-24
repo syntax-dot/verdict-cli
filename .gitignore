@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# Package-manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime and temporary files
+.tmp/
+tmp/
+temp/
+*.log
+*.pid
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# VerdictCI local artifacts
+.verdictci/
+verdictci-result*.json
+eval-results/
+reports/
+baselines/local/
+
+# Agent and local automation state
+.omo/
+.codex/cache/
+.codex/logs/
+.codex/tmp/
+
+# Python tooling occasionally used for eval experiments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Keep lockfiles tracked for reproducible CLI and Action releases.
