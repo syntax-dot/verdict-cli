@@ -47,6 +47,7 @@ The result JSON must be:
       "verdict": "failed",
       "passed": 8,
       "failed": 2,
+      "skipped": 0,
       "errored": 0,
       "thresholdFailures": [
         {
@@ -87,7 +88,9 @@ Allowed:
 
 ## Privacy
 
-Result JSON may include raw model output only when configured.
+Milestone 2 result JSON does not include raw prompts, case inputs, expected answers, traces, or model outputs. It includes case ids, statuses, optional scores, and optional short reasons only.
+
+Future result JSON may include raw model output only when configured.
 
 Future field:
 

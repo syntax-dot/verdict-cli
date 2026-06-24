@@ -1,7 +1,7 @@
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import type { ExitCode, MissingConfigError } from "@verdictci/core"
-import { checkConfigPath, EXIT_CODES } from "@verdictci/core"
+import type { ExitCode, ResultArtifact, ResultSuite, RunError, Verdict } from "@verdictci/core"
+import { EXIT_CODES, runVerdictCI } from "@verdictci/core"
 import { Command, CommanderError } from "commander"
 
 const DEFAULT_OUTPUT_PATH = "verdictci-result.json"
@@ -9,6 +9,7 @@ const DEFAULT_OUTPUT_PATH = "verdictci-result.json"
 type RunCommandOptions = {
   readonly config?: string
   readonly output: string
+  readonly fixtureMode?: boolean
 }
 
 export async function main(argv: readonly string[] = process.argv): Promise<ExitCode> {
@@ -50,6 +51,7 @@ function createProgram(runAction: (options: RunCommandOptions) => Promise<void>)
     .description("Run the configured VerdictCI eval suite.")
     .option("--config <path>", "Path to VerdictCI config.")
     .option("--output <path>", "Result JSON path.", DEFAULT_OUTPUT_PATH)
+    .option("--fixture-mode", "Use deterministic fixture outputs for examples and tests.")
     .action(runAction)
 
   return program
@@ -64,26 +66,93 @@ async function runCommand(options: RunCommandOptions): Promise<ExitCode> {
     return EXIT_CODES.usage
   }
 
-  const configResult = await checkConfigPath(options.config)
-  if (!configResult.ok) {
-    writeMissingConfig(configResult.error)
-    return configResult.error.exitCode
+  const runResult = await runVerdictCI({
+    configPath: options.config,
+    outputPath: options.output,
+  })
+  if (!runResult.ok) {
+    writeRunError(runResult.error)
+    return runResult.error.exitCode
   }
 
-  writeError([
-    "VerdictCI run skeleton found the config file, but eval execution is planned for Milestone 2.",
-    `Output: ${options.output}`,
-    "Next: implement config parsing, fixture execution, and result JSON writing in Milestone 2.",
-  ])
-  return EXIT_CODES.usage
+  writeSummary(runResult.value.result, options.output)
+  return runResult.value.exitCode
 }
 
-function writeMissingConfig(error: MissingConfigError): void {
-  writeError([error.message, `Next: ${error.remediation}`])
+function writeRunError(error: RunError): void {
+  switch (error.kind) {
+    case "missing_config":
+    case "config_error":
+      writeError([error.message, `Next: ${error.remediation}`])
+      return
+    case "case_file_error":
+      writeError([error.message, `Next: ${error.remediation}`])
+      return
+    default:
+      assertNever(error)
+  }
+}
+
+function writeSummary(result: ResultArtifact, outputPath: string): void {
+  const suiteCounts = countSuites(result.suites)
+  const failedCases = result.suites.flatMap((suite) =>
+    suite.cases
+      .filter((resultCase) => resultCase.status === "failed" || resultCase.status === "errored")
+      .map((resultCase) => `${suite.id}/${resultCase.id}`),
+  )
+  const lines = [
+    `VerdictCI result: ${result.summary.verdict}`,
+    `Suites: ${result.summary.suites} total, ${suiteCounts.passed} passed, ${suiteCounts.failed} failed, ${suiteCounts.errored} errored`,
+    `Cases: ${result.summary.cases} total, ${result.summary.passed} passed, ${result.summary.failed} failed, ${result.summary.skipped} skipped, ${result.summary.errored} errored`,
+    `Output: ${outputPath}`,
+    nextLine(result.summary.verdict, failedCases),
+  ]
+
+  process.stdout.write(`${lines.join("\n")}\n`)
+}
+
+function countSuites(suites: readonly ResultSuite[]): SuiteCounts {
+  return suites.reduce<SuiteCounts>((counts, suite) => incrementSuiteCount(counts, suite.verdict), {
+    passed: 0,
+    failed: 0,
+    errored: 0,
+  })
+}
+
+function incrementSuiteCount(counts: SuiteCounts, verdict: Verdict): SuiteCounts {
+  switch (verdict) {
+    case "passed":
+      return { ...counts, passed: counts.passed + 1 }
+    case "failed":
+      return { ...counts, failed: counts.failed + 1 }
+    case "errored":
+      return { ...counts, errored: counts.errored + 1 }
+    default:
+      return assertNever(verdict)
+  }
+}
+
+function nextLine(verdict: Verdict, failedCases: readonly string[]): string {
+  if (verdict === "passed") {
+    return "Next: no required threshold failures."
+  }
+
+  const cases = failedCases.length > 0 ? failedCases.join(", ") : "none"
+  return `Next: inspect failed cases: ${cases}.`
 }
 
 function writeError(lines: readonly string[]): void {
   process.stderr.write(`${lines.join("\n")}\n`)
+}
+
+type SuiteCounts = {
+  readonly passed: number
+  readonly failed: number
+  readonly errored: number
+}
+
+function assertNever(value: never): never {
+  throw new Error(`Unexpected CLI variant: ${String(value)}`)
 }
 
 function isDirectInvocation(argv: readonly string[]): boolean {

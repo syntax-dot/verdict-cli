@@ -29,7 +29,7 @@ Expected:
 - missing config exits `2`;
 - error output names `.tmp/missing-verdictci.yaml`;
 - error output includes a suggested fix;
-- `.tmp/verdictci-result.json` is not created in Milestone 1.
+- `.tmp/verdictci-result.json` is not created.
 
 Passing fixture:
 
@@ -41,7 +41,8 @@ Expected:
 
 - exit code `0`;
 - `.tmp/pass-result.json` exists;
-- terminal summary says `passed`.
+- terminal summary says `passed`;
+- result JSON includes `schemaVersion: 1`.
 
 Failing fixture:
 
@@ -54,7 +55,7 @@ Expected:
 - exit code `1`;
 - `.tmp/fail-result.json` exists;
 - terminal summary says `failed`;
-- failed case id is visible.
+- failed case id `support-bot/refund-window` is visible.
 
 Invalid config:
 
@@ -66,7 +67,8 @@ Expected:
 
 - exit code `2`;
 - error names the invalid field or missing file;
-- error includes a suggested fix.
+- error includes a suggested fix;
+- no result artifact is written.
 
 ## GitHub Action QA
 

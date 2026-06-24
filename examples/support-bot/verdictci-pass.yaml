@@ -1,0 +1,16 @@
+version: 1
+name: support-bot-evals
+
+defaults:
+  required: true
+  threshold:
+    passRate: 1
+    maxFailures: 0
+    maxErrors: 0
+
+suites:
+  - id: support-bot
+    description: Support bot regression suite
+    adapter: fixture
+    cases: cases-pass.jsonl
+

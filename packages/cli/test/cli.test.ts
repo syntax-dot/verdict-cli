@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process"
-import { access, mkdtemp, rm, writeFile } from "node:fs/promises"
+import { access, mkdtemp, readFile, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -98,22 +98,78 @@ describe("verdictci CLI", () => {
     }
   })
 
-  test("accepts the output flag without rejecting it as an unknown option", async () => {
-    // Given: an existing config file and an explicit output path.
+  test("runs a passing fixture config and writes the result artifact", async () => {
+    // Given: a passing fixture config and an explicit output path.
     const workingDir = await mkdtemp(path.join(tmpdir(), "verdictci-cli-"))
-    const configPath = path.join(workingDir, "verdictci.yaml")
     const outputPath = path.join(workingDir, "result.json")
 
     try {
-      await writeFile(configPath, "version: 1\nname: placeholder\nsuites: []\n", "utf8")
+      // When: the command runs the fixture suite.
+      const result = await runCli([
+        "run",
+        "--config",
+        "examples/support-bot/verdictci-pass.yaml",
+        "--output",
+        outputPath,
+        "--fixture-mode",
+      ])
 
-      // When: the command is executed with --output.
-      const result = await runCli(["run", "--config", configPath, "--output", outputPath])
-
-      // Then: Milestone 1 accepts the option while refusing to claim eval execution.
-      expect(result.exitCode).toBe(2)
+      // Then: the CLI reports a passing verdict and writes stable JSON.
+      expect(result.exitCode).toBe(0)
       expect(result.stderr).not.toContain("unknown option")
-      expect(result.stderr).toContain("Milestone 2")
+      expect(result.stdout).toContain("VerdictCI result: passed")
+      expect(await pathExists(outputPath)).toBe(true)
+      expect(await readFile(outputPath, "utf8")).toContain('"schemaVersion": 1')
+    } finally {
+      await rm(workingDir, { force: true, recursive: true })
+    }
+  })
+
+  test("runs a failing fixture config and exits 1 with a result artifact", async () => {
+    // Given: a failing fixture config and an explicit output path.
+    const workingDir = await mkdtemp(path.join(tmpdir(), "verdictci-cli-"))
+    const outputPath = path.join(workingDir, "result.json")
+
+    try {
+      // When: the command runs the fixture suite.
+      const result = await runCli([
+        "run",
+        "--config",
+        "examples/support-bot/verdictci-fail.yaml",
+        "--output",
+        outputPath,
+        "--fixture-mode",
+      ])
+
+      // Then: the CLI exits with a required eval failure and names the failed case.
+      expect(result.exitCode).toBe(1)
+      expect(result.stdout).toContain("VerdictCI result: failed")
+      expect(result.stdout).toContain("refund-window")
+      expect(await pathExists(outputPath)).toBe(true)
+    } finally {
+      await rm(workingDir, { force: true, recursive: true })
+    }
+  })
+
+  test("exits 2 and writes no artifact when config validation fails", async () => {
+    // Given: an invalid config and an explicit output path.
+    const workingDir = await mkdtemp(path.join(tmpdir(), "verdictci-cli-"))
+    const outputPath = path.join(workingDir, "result.json")
+
+    try {
+      // When: the command validates config before running suites.
+      const result = await runCli([
+        "run",
+        "--config",
+        "examples/broken/verdictci.yaml",
+        "--output",
+        outputPath,
+      ])
+
+      // Then: the CLI reports a usage/config error and leaves no artifact behind.
+      expect(result.exitCode).toBe(2)
+      expect(result.stderr).toContain("suites")
+      expect(result.stderr).toContain("Next:")
       expect(await pathExists(outputPath)).toBe(false)
     } finally {
       await rm(workingDir, { force: true, recursive: true })

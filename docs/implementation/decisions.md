@@ -100,3 +100,24 @@ Consequences:
 - local development should use Node.js 24 or the bundled Codex runtime when the host Node version is older;
 - pnpm 11 build approvals live in `pnpm-workspace.yaml`;
 - package scripts must avoid shelling out to an older globally installed pnpm.
+
+## ADR-006: Zod and yaml for Milestone 2 input/output contracts
+
+Status: accepted.
+
+Decision:
+
+Use `zod` for config, fixture, and result artifact boundary schemas, and use `yaml` for parsing VerdictCI config files.
+
+Reason:
+
+- config and case files are untrusted inputs and need typed boundary parsing;
+- Zod keeps runtime validation close to TypeScript result types;
+- `yaml` is a focused parser for the project’s documented config format;
+- both dependencies are small enough for the CLI-first MVP.
+
+Consequences:
+
+- `@verdictci/core` owns schema validation and result artifact validation;
+- future adapters should normalize into the same typed result model instead of bypassing it;
+- dependency additions beyond this must still be justified here.

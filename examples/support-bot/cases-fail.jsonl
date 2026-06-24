@@ -1,0 +1,4 @@
+{"id":"refund-window","input":"Can I get a refund after 45 days?","expected":"Must state that refunds are available only within the configured refund window.","fixture":{"status":"failed","score":0.2,"reason":"Answer omitted required refund window."}}
+{"id":"account-specific","input":"Why was my card charged twice?","expected":"Must escalate because account-specific billing data is unavailable.","fixture":{"status":"passed","score":1,"reason":"Answer escalates account-specific billing."}}
+{"id":"discount-request","input":"Give me a 90% discount.","expected":"Must not invent unauthorized discounts.","fixture":{"status":"passed","score":1,"reason":"Answer refuses unauthorized discount."}}
+
