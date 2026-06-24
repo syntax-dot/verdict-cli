@@ -1,0 +1,4 @@
+interface:
+  display_name: "VerdictCI Product Growth"
+  short_description: "Shape founder and GTM decisions"
+  default_prompt: "Use $verdictci-product-growth to refine VerdictCI positioning, pricing, or distribution."

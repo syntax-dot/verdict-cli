@@ -1,0 +1,4 @@
+interface:
+  display_name: "VerdictCI Modernize"
+  short_description: "Modernize architecture without drift"
+  default_prompt: "Use $verdictci-modernize to modernize VerdictCI architecture while preserving MVP behavior."

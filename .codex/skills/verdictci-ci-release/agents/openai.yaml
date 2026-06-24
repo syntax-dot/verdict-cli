@@ -1,0 +1,4 @@
+interface:
+  display_name: "VerdictCI CI Release"
+  short_description: "Verify Action and release behavior"
+  default_prompt: "Use $verdictci-ci-release to harden VerdictCI CI, release, or GitHub Action behavior."

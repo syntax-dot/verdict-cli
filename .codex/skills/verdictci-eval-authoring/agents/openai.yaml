@@ -1,0 +1,4 @@
+interface:
+  display_name: "VerdictCI Eval Authoring"
+  short_description: "Design useful AI eval suites"
+  default_prompt: "Use $verdictci-eval-authoring to design or improve VerdictCI eval cases."

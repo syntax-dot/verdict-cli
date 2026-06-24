@@ -1,0 +1,4 @@
+interface:
+  display_name: "VerdictCI MVP Build"
+  short_description: "Build the CLI-first MVP safely"
+  default_prompt: "Use $verdictci-mvp-build to implement the next VerdictCI MVP milestone."
