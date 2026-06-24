@@ -16,6 +16,21 @@ Expected:
 
 ## CLI QA
 
+Milestone 1 CLI skeleton:
+
+```bash
+pnpm verdictci --help
+pnpm verdictci run --config .tmp/missing-verdictci.yaml --output .tmp/verdictci-result.json
+```
+
+Expected:
+
+- help exits `0` and names `run`, `--config`, and `--output`;
+- missing config exits `2`;
+- error output names `.tmp/missing-verdictci.yaml`;
+- error output includes a suggested fix;
+- `.tmp/verdictci-result.json` is not created in Milestone 1.
+
 Passing fixture:
 
 ```bash

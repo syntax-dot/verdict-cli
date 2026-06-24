@@ -9,12 +9,12 @@
     "pnpm": ">=11.0.0"
   },
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "tsc --project packages/core/tsconfig.json --noEmit false && tsc --project packages/cli/tsconfig.json --noEmit false",
     "docs:check": "node scripts/docs-check.mjs",
     "lint": "biome check .",
     "test": "vitest run",
     "test:e2e": "vitest run packages/cli/test",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
     "verdictci": "tsx packages/cli/src/index.ts"
   },
   "devDependencies": {

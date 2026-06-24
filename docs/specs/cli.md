@@ -33,6 +33,14 @@ Required:
 - print summary;
 - exit with documented code.
 
+Milestone 1 implementation boundary:
+
+- `verdictci --help` must work;
+- `verdictci run --config <path> --output <path>` must parse the command;
+- missing `--config` or a missing config file must exit `2` with a remediation hint;
+- `--output` is accepted and defaults to `verdictci-result.json`;
+- YAML parsing, suite execution, result JSON writing, and terminal result summaries start in Milestone 2 and later.
+
 Options:
 
 | Option | Required | Description |

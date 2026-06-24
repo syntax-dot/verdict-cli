@@ -13,7 +13,7 @@ const requiredPaths = [
   "docs/specs/result-json.md",
   "docs/specs/exit-codes.md",
   "docs/implementation/roadmap.md",
-  "docs/qa/acceptance-criteria.md"
+  "docs/qa/acceptance-criteria.md",
 ]
 
 const requiredReadmeLinks = [
@@ -22,7 +22,7 @@ const requiredReadmeLinks = [
   "docs/architecture/overview.md",
   "docs/implementation/roadmap.md",
   "docs/qa/acceptance-criteria.md",
-  "docs/agentic/project-skills.md"
+  "docs/agentic/project-skills.md",
 ]
 
 const missingPaths = []
@@ -30,7 +30,7 @@ const missingPaths = []
 for (const relativePath of requiredPaths) {
   try {
     await access(path.resolve(relativePath))
-  } catch (error) {
+  } catch {
     missingPaths.push(relativePath)
   }
 }

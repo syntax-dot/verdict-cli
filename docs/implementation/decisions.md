@@ -79,3 +79,24 @@ Risk:
 Mitigation:
 
 - focus on PR decision workflow, result schema, baseline policy, and agent-friendly triage.
+
+## ADR-005: TypeScript pnpm workspace for the CLI skeleton
+
+Status: accepted.
+
+Decision:
+
+Use a Node.js 24 LTS, pnpm workspace, and TypeScript stack for the MVP CLI packages.
+
+Reason:
+
+- aligns with the repository map recommendation;
+- keeps npm CLI distribution straightforward;
+- fits the GitHub Action wrapper path;
+- supports fast tests and strict typechecking for a small solo-founder codebase.
+
+Consequences:
+
+- local development should use Node.js 24 or the bundled Codex runtime when the host Node version is older;
+- pnpm 11 build approvals live in `pnpm-workspace.yaml`;
+- package scripts must avoid shelling out to an older globally installed pnpm.

@@ -1,13 +1,13 @@
+import { spawn } from "node:child_process"
 import { access, mkdtemp, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { spawn } from "node:child_process"
 import { describe, expect, test } from "vitest"
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..")
 const cliPath = path.join(repoRoot, "packages/cli/src/index.ts")
-const pnpmCommand = process.platform === "win32" ? "pnpm.cmd" : "pnpm"
+const tsxCliPath = path.join(repoRoot, "node_modules/tsx/dist/cli.mjs")
 
 type CliResult = {
   readonly exitCode: number | null
@@ -17,10 +17,10 @@ type CliResult = {
 
 function runCli(args: readonly string[]): Promise<CliResult> {
   return new Promise((resolve, reject) => {
-    const child = spawn(pnpmCommand, ["exec", "tsx", cliPath, ...args], {
+    const child = spawn(process.execPath, [tsxCliPath, cliPath, ...args], {
       cwd: repoRoot,
       env: process.env,
-      shell: process.platform === "win32"
+      shell: false,
     })
 
     let stdout = ""
@@ -46,7 +46,7 @@ async function pathExists(filePath: string): Promise<boolean> {
   try {
     await access(filePath)
     return true
-  } catch (error) {
+  } catch {
     return false
   }
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.7/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.1/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -12,7 +12,9 @@
       "**",
       "!node_modules",
       "!dist",
+      "!**/dist",
       "!coverage",
+      "!**/coverage",
       "!.tmp",
       "!pnpm-lock.yaml"
     ]
@@ -32,7 +34,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "complexity": {
         "noBannedTypes": "error"
       },
@@ -52,5 +54,17 @@
         "noFallthroughSwitchClause": "error"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["vitest.config.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    }
+  ]
 }
