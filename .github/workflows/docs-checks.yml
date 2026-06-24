@@ -1,0 +1,52 @@
+name: Docs Checks
+
+on:
+  pull_request:
+    paths:
+      - "README.md"
+      - "AGENTS.md"
+      - "docs/**"
+  push:
+    branches:
+      - main
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required documentation files
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            "README.md"
+            "AGENTS.md"
+            "docs/product/brief.md"
+            "docs/product/founder-guide.md"
+            "docs/product/repository-strategy.md"
+            "docs/product/monetization.md"
+            "docs/product/distribution.md"
+            "docs/product/positioning.md"
+            "docs/scope/mvp.md"
+            "docs/scope/non-goals.md"
+            "docs/architecture/overview.md"
+            "docs/implementation/roadmap.md"
+            "docs/agentic/codex-workflow.md"
+            "docs/agentic/review-template.md"
+            "docs/specs/cli.md"
+            "docs/specs/config-yaml.md"
+            "docs/specs/result-json.md"
+            "docs/qa/acceptance-criteria.md"
+          )
+          for file in "${required[@]}"; do
+            test -s "$file" || { echo "Missing or empty: $file"; exit 1; }
+          done
+      - name: Check for unresolved placeholders
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -R -n -E "T[B]D|TO[D]O|F[I]XME" README.md AGENTS.md docs; then
+            echo "Unresolved placeholder found"
+            exit 1
+          fi
