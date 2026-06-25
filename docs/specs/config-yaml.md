@@ -61,8 +61,9 @@ Each suite:
 | --- | --- | --- |
 | `id` | yes | Stable machine id. |
 | `description` | no | Human-readable purpose. |
-| `adapter` | yes | `fixture` for Milestone 2 execution. `promptfoo` is reserved for a later adapter milestone. |
-| `cases` | yes | Path to test cases. |
+| `adapter` | yes | `fixture` or `promptfoo`. |
+| `cases` | yes | Path to JSONL fixture cases for `fixture`; path to promptfoo config for `promptfoo` when `promptfoo.config` is omitted. |
+| `promptfoo.config` | no | Promptfoo config path for `promptfoo` suites. Relative paths resolve from the VerdictCI config directory. |
 | `thresholds` | no | Suite-specific pass/fail thresholds. |
 | `required` | no | Whether failure should fail final verdict. Defaults true. |
 
@@ -89,7 +90,7 @@ Skipped cases do not affect the pass-rate denominator.
 
 ## Fixture cases
 
-Milestone 2 supports JSONL fixture case files for deterministic local and CI demos. Each non-empty line must be a JSON object:
+Fixture suites support JSONL case files for deterministic local and CI demos. Each non-empty line must be a JSON object:
 
 ```json
 {
@@ -114,6 +115,25 @@ Required fixture fields:
 | `fixture.status` | yes | `passed`, `failed`, `skipped`, or `errored`. |
 | `fixture.score` | no | Numeric score from `0` to `1`. |
 | `fixture.reason` | no | Short reason safe to show in CI output and result JSON. |
+
+## Promptfoo suites
+
+Promptfoo suites run `promptfoo eval` against a promptfoo config file and normalize the promptfoo JSON output into the VerdictCI result schema.
+
+```yaml
+suites:
+  - id: support-bot-promptfoo
+    adapter: promptfoo
+    cases: promptfooconfig.yaml
+    promptfoo:
+      config: promptfooconfig.yaml
+    thresholds:
+      passRate: 1
+      maxFailures: 0
+      maxErrors: 0
+```
+
+If `promptfoo.config` is omitted, VerdictCI uses `cases` as the promptfoo config path. Promptfoo assertion failures become VerdictCI failed cases and can produce exit `1` through thresholds. Promptfoo provider, adapter, command, or JSON-output errors produce exit `3` and no VerdictCI result artifact is written.
 
 ## Path behavior
 

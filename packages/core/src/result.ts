@@ -2,10 +2,12 @@ import { z } from "zod"
 
 export const CASE_STATUSES = ["passed", "failed", "skipped", "errored"] as const
 export const VERDICTS = ["passed", "failed", "errored"] as const
+export const RUN_MODES = ["fixture", "promptfoo", "mixed"] as const
 export const THRESHOLD_METRICS = ["passRate", "maxFailures", "maxErrors"] as const
 
 export type CaseStatus = (typeof CASE_STATUSES)[number]
 export type Verdict = (typeof VERDICTS)[number]
+export type RunMode = (typeof RUN_MODES)[number]
 export type ThresholdMetric = (typeof THRESHOLD_METRICS)[number]
 
 const ThresholdFailureSchema = z.object({
@@ -43,7 +45,7 @@ export const ResultArtifactSchema = z.object({
     startedAt: z.string().datetime(),
     durationMs: z.number().int().min(0),
     configPath: z.string().min(1),
-    mode: z.literal("fixture"),
+    mode: z.enum(RUN_MODES),
   }),
   summary: z.object({
     verdict: z.enum(VERDICTS),
@@ -92,7 +94,7 @@ export type ResultArtifact = {
     readonly startedAt: string
     readonly durationMs: number
     readonly configPath: string
-    readonly mode: "fixture"
+    readonly mode: RunMode
   }
   readonly summary: {
     readonly verdict: Verdict

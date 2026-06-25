@@ -64,4 +64,39 @@ describe("loadConfig", () => {
     expect(result.error.message).toContain("suites")
     expect(result.error.remediation).toContain("Fix")
   })
+
+  test("resolves promptfoo config paths relative to the VerdictCI config file", async () => {
+    // Given: a promptfoo suite with a suite-local promptfoo config path.
+    const workingDir = await mkdtemp(path.join(tmpdir(), "verdictci-config-"))
+    const configDir = path.join(workingDir, "evals")
+    const promptfooConfigPath = path.join(configDir, "promptfooconfig.yaml")
+    const configPath = path.join(configDir, "verdictci.yaml")
+    await mkdir(configDir, { recursive: true })
+    await writeFile(promptfooConfigPath, "prompts: []\nproviders: []\ntests: []\n", "utf8")
+    await writeFile(
+      configPath,
+      [
+        "version: 1",
+        "name: promptfoo-evals",
+        "suites:",
+        "  - id: support-bot-promptfoo",
+        "    adapter: promptfoo",
+        "    cases: promptfooconfig.yaml",
+        "    promptfoo:",
+        "      config: promptfooconfig.yaml",
+      ].join("\n"),
+      "utf8",
+    )
+
+    // When: the config is loaded.
+    const result = await loadConfig(configPath)
+
+    // Then: the promptfoo config is normalized without changing fixture behavior.
+    expect(result.ok).toBe(true)
+    if (!result.ok) {
+      expect.fail(result.error.message)
+    }
+    expect(result.value.suites[0]?.adapter).toBe("promptfoo")
+    expect(result.value.suites[0]?.promptfoo?.configPath).toBe(promptfooConfigPath)
+  })
 })

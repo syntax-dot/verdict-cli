@@ -22,12 +22,19 @@ const DefaultsSchema = z
   })
   .strict()
 
+const PromptfooSchema = z
+  .object({
+    config: z.string().min(1),
+  })
+  .strict()
+
 const SuiteSchema = z
   .object({
     id: z.string().min(1),
     description: z.string().min(1).optional(),
     adapter: z.enum(["fixture", "promptfoo"]),
     cases: z.string().min(1),
+    promptfoo: PromptfooSchema.optional(),
     thresholds: ThresholdSchema.optional(),
     required: z.boolean().optional(),
   })
@@ -45,6 +52,12 @@ const ConfigSchema = z
 type RawConfig = z.infer<typeof ConfigSchema>
 type RawSuite = RawConfig["suites"][number]
 type RawThresholds = z.infer<typeof ThresholdSchema>
+type RawPromptfoo = z.infer<typeof PromptfooSchema>
+
+export type PromptfooConfig = {
+  readonly config: string
+  readonly configPath: string
+}
 
 export type SuiteConfig = {
   readonly id: string
@@ -52,6 +65,7 @@ export type SuiteConfig = {
   readonly adapter: "fixture" | "promptfoo"
   readonly cases: string
   readonly casesPath: string
+  readonly promptfoo?: PromptfooConfig
   readonly required: boolean
   readonly thresholds: Thresholds
 }
@@ -119,13 +133,18 @@ function normalizeSuite(
     casesPath: path.resolve(configDir, suite.cases),
     required: suite.required ?? defaults?.required ?? true,
     thresholds: mergeThresholds(defaults?.threshold, suite.thresholds),
-  } satisfies Omit<SuiteConfig, "description">
+  } satisfies Omit<SuiteConfig, "description" | "promptfoo">
+
+  const normalizedSuite =
+    suite.adapter === "promptfoo"
+      ? { ...base, promptfoo: normalizePromptfoo(configDir, suite.promptfoo, suite.cases) }
+      : base
 
   if (suite.description === undefined) {
-    return base
+    return normalizedSuite
   }
 
-  return { ...base, description: suite.description }
+  return { ...normalizedSuite, description: suite.description }
 }
 
 function mergeThresholds(
@@ -143,6 +162,18 @@ function normalizeThresholds(thresholds: RawThresholds | undefined): Thresholds 
     ...(thresholds?.passRate !== undefined ? { passRate: thresholds.passRate } : {}),
     ...(thresholds?.maxFailures !== undefined ? { maxFailures: thresholds.maxFailures } : {}),
     ...(thresholds?.maxErrors !== undefined ? { maxErrors: thresholds.maxErrors } : {}),
+  }
+}
+
+function normalizePromptfoo(
+  configDir: string,
+  promptfoo: RawPromptfoo | undefined,
+  casesPath: string,
+): PromptfooConfig {
+  const config = promptfoo?.config ?? casesPath
+  return {
+    config,
+    configPath: path.resolve(configDir, config),
   }
 }
 

@@ -1,0 +1,14 @@
+version: 1
+name: promptfoo-support-bot
+defaults:
+  threshold:
+    passRate: 1
+    maxFailures: 0
+    maxErrors: 0
+suites:
+  - id: support-bot-promptfoo
+    description: Support bot policy checks through promptfoo.
+    adapter: promptfoo
+    cases: promptfooconfig.yaml
+    promptfoo:
+      config: promptfooconfig.yaml

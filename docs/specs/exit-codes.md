@@ -15,6 +15,8 @@ VerdictCI exit codes are part of the public contract.
 - A behavioral regression is exit `1`, not `3`.
 - Missing config is exit `2`.
 - Invalid YAML is exit `2`.
+- Promptfoo assertion failures are eval failures and can exit `1`.
+- Promptfoo command, provider, runtime, or output parsing failures exit `3`.
 - Provider timeout is exit `3`.
 - Uncaught exception is exit `4`.
 

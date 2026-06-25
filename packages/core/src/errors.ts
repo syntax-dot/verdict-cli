@@ -42,7 +42,15 @@ export type CaseFileError = {
   readonly line?: number
 }
 
-export type RunError = MissingConfigError | ConfigError | CaseFileError
+export type ProviderError = {
+  readonly kind: "provider_error"
+  readonly suiteId: string
+  readonly exitCode: typeof EXIT_CODES.provider
+  readonly message: string
+  readonly remediation: string
+}
+
+export type RunError = MissingConfigError | ConfigError | CaseFileError | ProviderError
 
 export function ok<TValue>(value: TValue): Result<TValue, never> {
   return { ok: true, value }
@@ -83,9 +91,25 @@ export function caseFileError(input: CaseFileErrorInput): CaseFileError {
   return { ...base, line: input.line }
 }
 
+export function providerError(input: ProviderErrorInput): ProviderError {
+  return {
+    kind: "provider_error",
+    suiteId: input.suiteId,
+    exitCode: EXIT_CODES.provider,
+    message: input.message,
+    remediation: input.remediation,
+  }
+}
+
 type CaseFileErrorInput = {
   readonly casesPath: string
   readonly message: string
   readonly remediation: string
   readonly line?: number
+}
+
+type ProviderErrorInput = {
+  readonly suiteId: string
+  readonly message: string
+  readonly remediation: string
 }

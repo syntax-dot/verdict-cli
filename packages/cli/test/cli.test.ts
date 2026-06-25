@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process"
-import { access, mkdtemp, readFile, rm } from "node:fs/promises"
+import { access, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -15,11 +15,11 @@ type CliResult = {
   readonly stderr: string
 }
 
-function runCli(args: readonly string[]): Promise<CliResult> {
+function runCli(args: readonly string[], env: NodeJS.ProcessEnv = process.env): Promise<CliResult> {
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [tsxCliPath, cliPath, ...args], {
       cwd: repoRoot,
-      env: process.env,
+      env,
       shell: false,
     })
 
@@ -203,6 +203,45 @@ describe("verdictci CLI", () => {
       // Then: the CLI reports a usage/config error and leaves no artifact behind.
       expect(result.exitCode).toBe(2)
       expect(result.stderr).toContain("suites")
+      expect(result.stderr).toContain("Next:")
+      expect(await pathExists(outputPath)).toBe(false)
+    } finally {
+      await rm(workingDir, { force: true, recursive: true })
+    }
+  })
+
+  test("exits 3 and writes no artifact when promptfoo cannot run", async () => {
+    // Given: a promptfoo suite and a missing promptfoo binary.
+    const workingDir = await mkdtemp(path.join(tmpdir(), "verdictci-cli-"))
+    const configPath = path.join(workingDir, "verdictci.yaml")
+    const promptfooConfigPath = path.join(workingDir, "promptfooconfig.yaml")
+    const outputPath = path.join(workingDir, "result.json")
+    await writeFile(
+      configPath,
+      [
+        "version: 1",
+        "name: promptfoo-evals",
+        "suites:",
+        "  - id: support-bot-promptfoo",
+        "    adapter: promptfoo",
+        "    cases: promptfooconfig.yaml",
+        "    promptfoo:",
+        "      config: promptfooconfig.yaml",
+      ].join("\n"),
+      "utf8",
+    )
+    await writeFile(promptfooConfigPath, "prompts: []\nproviders: []\ntests: []\n", "utf8")
+
+    try {
+      // When: the promptfoo adapter cannot launch its backend command.
+      const result = await runCli(["run", "--config", configPath, "--output", outputPath], {
+        ...process.env,
+        VERDICTCI_PROMPTFOO_BIN: path.join(workingDir, "missing-promptfoo"),
+      })
+
+      // Then: the CLI maps the backend failure to exit 3 with a remediation hint.
+      expect(result.exitCode).toBe(3)
+      expect(result.stderr).toContain("promptfoo")
       expect(result.stderr).toContain("Next:")
       expect(await pathExists(outputPath)).toBe(false)
     } finally {

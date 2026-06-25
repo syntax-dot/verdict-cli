@@ -10,11 +10,19 @@ export type {
   ConfigError,
   ConfigIssue,
   MissingConfigError,
+  ProviderError,
   Result,
   RunError,
 } from "./errors.js"
 export { EXIT_CODES, type ExitCode } from "./exit-codes.js"
 export { type FixtureCase, type FixtureCaseLoadResult, loadFixtureCases } from "./fixtures.js"
+export {
+  type NormalizePromptfooOutputOptions,
+  normalizePromptfooOutput,
+  type PromptfooCommand,
+  type RunPromptfooSuiteOptions,
+  runPromptfooSuite,
+} from "./promptfoo.js"
 export {
   applyThresholds,
   CASE_STATUSES,
@@ -25,6 +33,8 @@ export {
   ResultArtifactSchema,
   type ResultCase,
   type ResultSuite,
+  RUN_MODES,
+  type RunMode,
   suiteVerdict,
   THRESHOLD_METRICS,
   type ThresholdFailure,

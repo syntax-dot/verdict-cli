@@ -21,7 +21,8 @@ This is the recommended future repository structure.
 │   ├── support-bot/
 │   ├── rag-citations/
 │   ├── tool-agent/
-│   └── classifier/
+│   ├── classifier/
+│   └── promptfoo/
 ├── docs/
 ├── scripts/
 └── .github/
@@ -63,6 +64,8 @@ Owns:
 - artifact upload integration.
 
 ### `packages/adapters/promptfoo`
+
+MVP note: Milestone 5 keeps this adapter in `packages/core/src/promptfoo.ts` to avoid an early package split. Extract it to this package only when adapter complexity justifies the boundary.
 
 Owns:
 

@@ -16,7 +16,7 @@ Package:
 
 ## MVP commands
 
-Implemented through Milestone 3:
+Implemented through Milestone 5:
 
 ```bash
 verdictci run --config verdictci.yaml --output verdictci-result.json
@@ -41,14 +41,16 @@ Required:
 - print summary;
 - exit with documented code.
 
-Milestone 3 implementation boundary:
+Milestone 5 implementation boundary:
 
 - `verdictci --help` must work;
 - `verdictci run --config <path> --output <path>` must parse the command;
 - missing `--config` or a missing config file must exit `2` with a remediation hint;
 - `--output` is accepted and defaults to `verdictci-result.json`;
-- YAML parsing, fixture suite execution, result JSON writing, terminal summary rendering, and Markdown summary writing are implemented;
-- `validate`, `explain`, GitHub summaries, provider adapters, and promptfoo execution are not implemented yet.
+- YAML parsing, fixture suite execution, promptfoo suite execution, result JSON writing, terminal summary rendering, and Markdown summary writing are implemented;
+- promptfoo assertion failures are eval failures and can exit `1`;
+- promptfoo provider, adapter, command, or JSON-output errors exit `3` and do not write a VerdictCI result artifact;
+- `validate` and `explain` are not implemented yet.
 
 Implemented options:
 

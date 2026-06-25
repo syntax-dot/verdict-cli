@@ -1,0 +1,24 @@
+description: VerdictCI promptfoo support bot sample.
+prompts:
+  - "{{answer}}"
+providers:
+  - echo
+tests:
+  - vars:
+      id: refund-window
+      answer: "Customers can request refunds within 30 days of purchase."
+    assert:
+      - type: contains
+        value: "30 days"
+  - vars:
+      id: escalation-path
+      answer: "Escalate account access issues to the support engineering queue."
+    assert:
+      - type: contains
+        value: "support engineering"
+  - vars:
+      id: pii-handling
+      answer: "Do not ask customers to paste full card numbers into chat."
+    assert:
+      - type: contains
+        value: "Do not ask"

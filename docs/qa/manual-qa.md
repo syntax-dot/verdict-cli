@@ -85,6 +85,22 @@ Expected:
 - error includes a suggested fix;
 - no result artifact is written.
 
+Promptfoo backend:
+
+```bash
+pnpm verdictci run --config examples/promptfoo/verdictci.yaml --output .tmp/promptfoo-result.json
+```
+
+Expected:
+
+- exit code `0`;
+- `.tmp/promptfoo-result.json` exists;
+- terminal summary says `passed`;
+- result JSON has `run.mode: "promptfoo"`;
+- result JSON includes three passed cases and no raw promptfoo outputs.
+
+If the host `pnpm` uses a Node version older than the project engine requirement, set `VERDICTCI_NODE` to a supported Node executable before running the promptfoo QA command.
+
 ## GitHub Action QA
 
 Local simulation:

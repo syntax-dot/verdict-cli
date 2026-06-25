@@ -107,6 +107,9 @@ function writeRunError(error: RunError): void {
     case "case_file_error":
       writeError([error.message, `Next: ${error.remediation}`])
       return
+    case "provider_error":
+      writeError([error.message, `Next: ${error.remediation}`])
+      return
     default:
       assertNever(error)
   }

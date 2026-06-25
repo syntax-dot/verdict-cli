@@ -2,10 +2,11 @@ import { mkdir, writeFile } from "node:fs/promises"
 import path from "node:path"
 import { loadConfig, type SuiteConfig } from "./config.js"
 import type { Result, RunError } from "./errors.js"
-import { configError, err, ok } from "./errors.js"
+import { ok } from "./errors.js"
 import { EXIT_CODES, type ExitCode } from "./exit-codes.js"
 import type { FixtureCase } from "./fixtures.js"
 import { loadFixtureCases } from "./fixtures.js"
+import { type PromptfooCommand, runPromptfooSuite } from "./promptfoo.js"
 import {
   applyThresholds,
   type Counts,
@@ -13,6 +14,7 @@ import {
   type ResultArtifact,
   type ResultCase,
   type ResultSuite,
+  type RunMode,
   suiteVerdict,
   type Verdict,
 } from "./result.js"
@@ -20,6 +22,7 @@ import {
 export type RunVerdictCIOptions = {
   readonly configPath: string
   readonly outputPath: string
+  readonly promptfooCommand?: PromptfooCommand | undefined
 }
 
 export type RunVerdictCIValue = {
@@ -38,7 +41,7 @@ export async function runVerdictCI(options: RunVerdictCIOptions): Promise<RunVer
 
   const suiteResults: ResultSuite[] = []
   for (const suite of configResult.value.suites) {
-    const suiteResult = await runFixtureSuite(configResult.value.configPath, suite)
+    const suiteResult = await runSuite({ suite, promptfooCommand: options.promptfooCommand })
     if (!suiteResult.ok) {
       return suiteResult
     }
@@ -67,7 +70,7 @@ export async function runVerdictCI(options: RunVerdictCIOptions): Promise<RunVer
       startedAt: startedAt.toISOString(),
       durationMs: Date.now() - startedAt.getTime(),
       configPath: configResult.value.configPath,
-      mode: "fixture",
+      mode: runMode(configResult.value.suites),
     },
     summary: {
       verdict,
@@ -91,20 +94,26 @@ export async function runVerdictCI(options: RunVerdictCIOptions): Promise<RunVer
   })
 }
 
-async function runFixtureSuite(
-  configPath: string,
-  suite: SuiteConfig,
-): Promise<Result<ResultSuite, RunError>> {
-  if (suite.adapter !== "fixture") {
-    return err(
-      configError(configPath, {
-        fieldPath: `suites.${suite.id}.adapter`,
-        expected: "fixture",
-        message: "Only the fixture adapter is executable in Milestone 2.",
-      }),
-    )
-  }
+type RunSuiteOptions = {
+  readonly suite: SuiteConfig
+  readonly promptfooCommand?: PromptfooCommand | undefined
+}
 
+async function runSuite(options: RunSuiteOptions): Promise<Result<ResultSuite, RunError>> {
+  switch (options.suite.adapter) {
+    case "fixture":
+      return runFixtureSuite(options.suite)
+    case "promptfoo":
+      return runPromptfooSuite({
+        suite: options.suite,
+        command: options.promptfooCommand,
+      })
+    default:
+      return assertNever(options.suite.adapter)
+  }
+}
+
+async function runFixtureSuite(suite: SuiteConfig): Promise<Result<ResultSuite, RunError>> {
   const casesResult = await loadFixtureCases(suite.casesPath)
   if (!casesResult.ok) {
     return casesResult
@@ -134,6 +143,15 @@ function fixtureToResultCase(fixtureCase: FixtureCase): ResultCase {
   }
 }
 
+function runMode(suites: readonly SuiteConfig[]): RunMode {
+  const hasFixtureSuite = suites.some((suite) => suite.adapter === "fixture")
+  const hasPromptfooSuite = suites.some((suite) => suite.adapter === "promptfoo")
+  if (hasFixtureSuite && hasPromptfooSuite) {
+    return "mixed"
+  }
+  return hasPromptfooSuite ? "promptfoo" : "fixture"
+}
+
 function runVerdict(requiredSuites: readonly ResultSuite[]): Verdict {
   const hasErroredSuite = requiredSuites.some((suite) => suite.verdict === "errored")
   if (hasErroredSuite) {
@@ -150,4 +168,8 @@ function formatRunId(startedAt: Date): string {
     .replace(/\.\d{3}Z$/, "Z")
     .replaceAll(":", "-")
   return `local-${timestamp}`
+}
+
+function assertNever(value: never): never {
+  throw new Error(`Unexpected suite adapter: ${String(value)}`)
 }

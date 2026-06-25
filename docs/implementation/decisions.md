@@ -59,11 +59,11 @@ Reason:
 
 ## ADR-004: promptfoo compatibility first
 
-Status: proposed.
+Status: accepted.
 
 Decision:
 
-Use promptfoo as the first eval backend or compatibility target.
+Use promptfoo as the first eval backend and compatibility target. Add `promptfoo` as a development dependency so the repository can run deterministic local QA without requiring a global promptfoo install.
 
 Reason:
 
@@ -79,6 +79,9 @@ Risk:
 Mitigation:
 
 - focus on PR decision workflow, result schema, baseline policy, and agent-friendly triage.
+- keep promptfoo behind an adapter boundary;
+- normalize only summary fields into the VerdictCI artifact;
+- deny optional native/browser build scripts in `pnpm-workspace.yaml` unless a future milestone proves they are required.
 
 ## ADR-005: TypeScript pnpm workspace for the CLI skeleton
 

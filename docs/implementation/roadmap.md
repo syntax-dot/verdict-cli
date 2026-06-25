@@ -93,12 +93,22 @@ Exit criteria:
 
 Goal: VerdictCI can run a real eval backend.
 
+Status: implemented in the MVP branch.
+
 Deliverables:
 
 - promptfoo adapter;
 - config mapping;
 - result normalization;
 - example promptfoo suite.
+
+Implemented boundary:
+
+- executes `promptfoo eval` locally through the CLI;
+- normalizes promptfoo JSON output into summary-only VerdictCI result cases;
+- treats promptfoo assertion failures as eval failures;
+- treats promptfoo command/provider/runtime/output failures as provider errors;
+- keeps raw promptfoo outputs out of the VerdictCI artifact.
 
 Exit criteria:
 

@@ -86,9 +86,19 @@ Allowed:
 - `skipped`
 - `errored`
 
+## Run modes
+
+Allowed `run.mode` values:
+
+- `fixture`
+- `promptfoo`
+- `mixed`
+
+`mixed` means the same VerdictCI run included both fixture and promptfoo suites.
+
 ## Privacy
 
-Milestone 2 result JSON does not include raw prompts, case inputs, expected answers, traces, or model outputs. It includes case ids, statuses, optional scores, and optional short reasons only.
+MVP result JSON does not include raw prompts, case inputs, expected answers, traces, promptfoo raw outputs, provider payloads, or model outputs. It includes case ids, statuses, optional scores, and optional short reasons only.
 
 Future result JSON may include raw model output only when configured.
 
