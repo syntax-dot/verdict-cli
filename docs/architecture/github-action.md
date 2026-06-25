@@ -48,13 +48,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: verdictci/action@v1
         with:
           config: verdictci.yaml
           output: verdictci-result.json
+          summary: verdictci-summary.md
+          upload-artifact: "true"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
@@ -65,12 +66,14 @@ MVP inputs:
 
 - `config`
 - `output`
+- `summary`
 - `fixture-mode`
 - `fail-on`
+- `upload-artifact`
+- `artifact-name`
 
 Post-MVP inputs:
 
-- `upload`
 - `workspace`
 - `token`
 - `baseline`
@@ -98,7 +101,9 @@ The job summary should include:
 
 ## Permissions
 
-MVP can avoid PR comments and require fewer permissions.
+MVP avoids PR comments and only needs repository read access for checkout.
+Artifact upload and job-summary writes use the default GitHub Actions runtime
+surface; no GitHub App or PR write permission is required.
 
 If posting PR comments:
 

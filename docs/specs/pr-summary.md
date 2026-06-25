@@ -1,6 +1,9 @@
 # PR summary spec
 
-The Markdown summary is the main human-readable CI surface in the MVP. Milestone 3 writes it to a local path with `verdictci run --summary <path>`; GitHub Action publication comes later.
+The Markdown summary is the main human-readable CI surface in the MVP.
+Milestone 3 writes it to a local path with `verdictci run --summary <path>`.
+Milestone 4 publishes that same file to the GitHub Actions job summary by
+appending it to `$GITHUB_STEP_SUMMARY`.
 
 ## Goals
 
@@ -43,6 +46,21 @@ Expected:
 - the CLI writes `.tmp/fail-summary.md`;
 - a failing eval still exits `1`;
 - the Markdown contains the suite table, failed case table, threshold explanation, and result artifact path.
+
+## Current GitHub Action behavior
+
+The composite action runs the CLI with `--summary`, then appends the generated
+Markdown file to `$GITHUB_STEP_SUMMARY`. The runner step captures the CLI exit
+code as an action output so artifact upload and summary publication can happen
+before the final action step fails the job.
+
+Expected:
+
+- passing evals produce a job summary and final action exit `0`;
+- failing evals produce a job summary, expose `exit-code=1`, upload the result
+  artifact when configured, and fail in the final action step;
+- action input errors produce a short action error summary and expose
+  `verdict=errored`.
 
 ## Tone
 

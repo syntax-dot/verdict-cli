@@ -87,6 +87,55 @@ Expected:
 
 ## GitHub Action QA
 
+Local simulation:
+
+```bash
+rm -f .tmp/action-result.json .tmp/action-summary.md .tmp/github-output.txt .tmp/github-step-summary.md
+GITHUB_ACTION_PATH="$PWD" \
+GITHUB_WORKSPACE="$PWD" \
+GITHUB_OUTPUT=".tmp/github-output.txt" \
+GITHUB_STEP_SUMMARY=".tmp/github-step-summary.md" \
+INPUT_CONFIG="examples/support-bot/verdictci-fail.yaml" \
+INPUT_OUTPUT=".tmp/action-result.json" \
+INPUT_SUMMARY=".tmp/action-summary.md" \
+INPUT_FIXTURE_MODE="true" \
+INPUT_FAIL_ON="fail" \
+bash scripts/github-action/run-verdictci.sh
+```
+
+Expected:
+
+- runner script exits `0`;
+- `.tmp/action-result.json` exists;
+- `.tmp/action-summary.md` exists and begins with `# VerdictCI: failed`;
+- `.tmp/github-step-summary.md` includes the VerdictCI Markdown summary;
+- `.tmp/github-output.txt` includes `exit-code=1`, `verdict=failed`, and
+  `result-exists=true`.
+
+Invalid action input:
+
+```bash
+rm -f .tmp/action-result.json .tmp/action-summary.md .tmp/github-output.txt .tmp/github-step-summary.md
+GITHUB_ACTION_PATH="$PWD" \
+GITHUB_WORKSPACE="$PWD" \
+GITHUB_OUTPUT=".tmp/github-output.txt" \
+GITHUB_STEP_SUMMARY=".tmp/github-step-summary.md" \
+INPUT_CONFIG="examples/support-bot/verdictci-fail.yaml" \
+INPUT_OUTPUT=".tmp/action-result.json" \
+INPUT_SUMMARY=".tmp/action-summary.md" \
+INPUT_FIXTURE_MODE="true" \
+INPUT_FAIL_ON="warn" \
+bash scripts/github-action/run-verdictci.sh
+```
+
+Expected:
+
+- runner script exits `0`;
+- `.tmp/action-result.json` is not created;
+- `.tmp/github-output.txt` includes `exit-code=2`, `verdict=errored`, and
+  `result-exists=false`;
+- `.tmp/github-step-summary.md` includes the unsupported `fail-on` error.
+
 In a sample repo:
 
 1. create a PR that changes a prompt;

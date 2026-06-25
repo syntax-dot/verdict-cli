@@ -1,0 +1,25 @@
+name: VerdictCI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verdictci:
+    name: VerdictCI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Run VerdictCI
+        uses: ./
+        with:
+          config: examples/support-bot/verdictci.yaml
+          output: .tmp/verdictci-result.json
+          summary: .tmp/verdictci-summary.md
+          fixture-mode: "true"
+          artifact-name: verdictci-result

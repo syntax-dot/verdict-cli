@@ -1,0 +1,89 @@
+name: VerdictCI
+description: Run VerdictCI evals and publish a GitHub Actions summary.
+
+inputs:
+  config:
+    description: Path to verdictci.yaml or evals.yaml.
+    required: true
+  output:
+    description: Path where VerdictCI writes result JSON.
+    required: false
+    default: verdictci-result.json
+  summary:
+    description: Path where VerdictCI writes Markdown summary.
+    required: false
+    default: verdictci-summary.md
+  fixture-mode:
+    description: Run deterministic fixture cases without provider calls.
+    required: false
+    default: "false"
+  fail-on:
+    description: Failure policy for the MVP. Only fail is supported.
+    required: false
+    default: fail
+  upload-artifact:
+    description: Upload the VerdictCI result JSON artifact.
+    required: false
+    default: "true"
+  artifact-name:
+    description: Name for the uploaded VerdictCI result artifact.
+    required: false
+    default: verdictci-result
+
+outputs:
+  verdict:
+    description: Final VerdictCI verdict.
+    value: ${{ steps.run.outputs.verdict }}
+  result-path:
+    description: Path to the VerdictCI result JSON artifact.
+    value: ${{ steps.run.outputs.result-path }}
+  passed:
+    description: Number of passed cases.
+    value: ${{ steps.run.outputs.passed }}
+  failed:
+    description: Number of failed cases.
+    value: ${{ steps.run.outputs.failed }}
+  errored:
+    description: Number of errored cases.
+    value: ${{ steps.run.outputs.errored }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: "24"
+
+    - name: Install VerdictCI dependencies
+      shell: bash
+      run: |
+        corepack enable
+        corepack prepare pnpm@11.7.0 --activate
+        pnpm --dir "$GITHUB_ACTION_PATH" install --frozen-lockfile
+
+    - id: run
+      name: Run VerdictCI
+      shell: bash
+      env:
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+        INPUT_SUMMARY: ${{ inputs.summary }}
+        INPUT_FIXTURE_MODE: ${{ inputs.fixture-mode }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_UPLOAD_ARTIFACT: ${{ inputs.upload-artifact }}
+        INPUT_ARTIFACT_NAME: ${{ inputs.artifact-name }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/github-action/run-verdictci.sh"
+
+    - name: Upload VerdictCI result artifact
+      if: ${{ inputs.upload-artifact == 'true' && steps.run.outputs.result-exists == 'true' }}
+      uses: actions/upload-artifact@v6
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ steps.run.outputs.result-path }}
+        if-no-files-found: error
+
+    - name: Fail on VerdictCI exit code
+      if: ${{ steps.run.outputs.exit-code != '0' }}
+      shell: bash
+      run: exit "${{ steps.run.outputs.exit-code }}"
