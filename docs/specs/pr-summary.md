@@ -1,6 +1,6 @@
 # PR summary spec
 
-The PR or GitHub Action summary is the main user-facing surface in the MVP.
+The Markdown summary is the main human-readable CI surface in the MVP. Milestone 3 writes it to a local path with `verdictci run --summary <path>`; GitHub Action publication comes later.
 
 ## Goals
 
@@ -31,6 +31,18 @@ The summary should answer:
 
 Result artifact: `verdictci-result.json`
 ```
+
+## Current CLI behavior
+
+```bash
+verdictci run --config examples/support-bot/verdictci-fail.yaml --output .tmp/fail-result.json --summary .tmp/fail-summary.md --fixture-mode
+```
+
+Expected:
+
+- the CLI writes `.tmp/fail-summary.md`;
+- a failing eval still exits `1`;
+- the Markdown contains the suite table, failed case table, threshold explanation, and result artifact path.
 
 ## Tone
 

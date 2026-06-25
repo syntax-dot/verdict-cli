@@ -34,3 +34,8 @@ export {
   type Verdict,
 } from "./result.js"
 export { type RunVerdictCIOptions, type RunVerdictCIResult, runVerdictCI } from "./runner.js"
+export {
+  renderMarkdownSummary,
+  renderTerminalSummary,
+  type SummaryRenderOptions,
+} from "./summary.js"

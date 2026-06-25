@@ -151,6 +151,40 @@ describe("verdictci CLI", () => {
     }
   })
 
+  test("writes a readable Markdown summary when summary output is requested", async () => {
+    // Given: a failing fixture config with JSON and Markdown output paths.
+    const workingDir = await mkdtemp(path.join(tmpdir(), "verdictci-cli-"))
+    const outputPath = path.join(workingDir, "result.json")
+    const summaryPath = path.join(workingDir, "summary.md")
+
+    try {
+      // When: the command runs with an explicit summary path.
+      const result = await runCli([
+        "run",
+        "--config",
+        "examples/support-bot/verdictci-fail.yaml",
+        "--output",
+        outputPath,
+        "--summary",
+        summaryPath,
+        "--fixture-mode",
+      ])
+
+      // Then: the CLI preserves exit 1 and writes a Markdown failed-case table.
+      expect(result.exitCode).toBe(1)
+      expect(await pathExists(outputPath)).toBe(true)
+      expect(await pathExists(summaryPath)).toBe(true)
+      const summary = await readFile(summaryPath, "utf8")
+      expect(summary).toContain("# VerdictCI: failed")
+      expect(summary).toContain(
+        "| refund-window | support-bot | Answer omitted required refund window. |",
+      )
+      expect(summary).toContain("Result artifact:")
+    } finally {
+      await rm(workingDir, { force: true, recursive: true })
+    }
+  })
+
   test("exits 2 and writes no artifact when config validation fails", async () => {
     // Given: an invalid config and an explicit output path.
     const workingDir = await mkdtemp(path.join(tmpdir(), "verdictci-cli-"))

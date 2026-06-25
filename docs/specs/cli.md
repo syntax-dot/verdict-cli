@@ -16,10 +16,11 @@ Package:
 
 ## MVP commands
 
-Implemented through Milestone 2:
+Implemented through Milestone 3:
 
 ```bash
 verdictci run --config verdictci.yaml --output verdictci-result.json
+verdictci run --config verdictci.yaml --output verdictci-result.json --summary verdictci-summary.md
 ```
 
 Planned for later MVP milestones:
@@ -40,14 +41,14 @@ Required:
 - print summary;
 - exit with documented code.
 
-Milestone 2 implementation boundary:
+Milestone 3 implementation boundary:
 
 - `verdictci --help` must work;
 - `verdictci run --config <path> --output <path>` must parse the command;
 - missing `--config` or a missing config file must exit `2` with a remediation hint;
 - `--output` is accepted and defaults to `verdictci-result.json`;
-- YAML parsing, fixture suite execution, result JSON writing, and a minimal terminal result summary are implemented;
-- `validate`, `explain`, markdown output, GitHub summaries, provider adapters, and promptfoo execution are not implemented yet.
+- YAML parsing, fixture suite execution, result JSON writing, terminal summary rendering, and Markdown summary writing are implemented;
+- `validate`, `explain`, GitHub summaries, provider adapters, and promptfoo execution are not implemented yet.
 
 Implemented options:
 
@@ -55,13 +56,13 @@ Implemented options:
 | --- | --- | --- |
 | `--config <path>` | yes | Path to VerdictCI config. |
 | `--output <path>` | no | Result JSON path. Defaults to `verdictci-result.json`. |
+| `--summary <path>` | no | Write a Markdown summary to this path. |
 | `--fixture-mode` | no | Use deterministic fixture outputs for examples/tests. |
 
 Planned options:
 
 | Option | Description |
 | --- | --- |
-| `--format <kind>` | `json`, `markdown`, or `both`. |
 | `--github-summary` | Write Markdown summary to `$GITHUB_STEP_SUMMARY` when present. |
 | `--fail-on <level>` | Choose the failure level. Defaults to `fail`. |
 
@@ -95,9 +96,23 @@ Minimum output:
 VerdictCI result: failed
 Suites: 2 total, 1 passed, 1 failed
 Cases: 24 total, 21 passed, 3 failed, 0 skipped, 0 errored
+Threshold failures:
+- support-bot: passRate 0.80 < 0.90
+Failed cases:
+- support-bot/refund-window: Answer omitted required refund window.
 Output: verdictci-result.json
 Next: inspect failed cases: support-bot/refund-window.
 ```
+
+## Markdown summary
+
+When `--summary <path>` is provided, `run` writes a Markdown summary beside the result JSON. It includes:
+
+- final verdict;
+- suite and case counts;
+- suite table with threshold notes;
+- failed case table with case id, suite id, and reason;
+- result artifact path.
 
 ## Stability
 

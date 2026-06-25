@@ -57,6 +57,21 @@ Expected:
 - terminal summary says `failed`;
 - failed case id `support-bot/refund-window` is visible.
 
+Markdown summary:
+
+```bash
+pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .tmp/fail-result.json --summary .tmp/fail-summary.md --fixture-mode
+```
+
+Expected:
+
+- exit code `1`;
+- `.tmp/fail-summary.md` exists;
+- Markdown begins with `# VerdictCI: failed`;
+- suite table includes the `support-bot` threshold failure;
+- failed case table names `refund-window`;
+- result artifact path is included.
+
 Invalid config:
 
 ```bash
