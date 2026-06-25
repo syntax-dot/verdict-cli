@@ -85,7 +85,7 @@ Keep the recording under two minutes. Do not include provider API keys, raw prom
 
 ## Design partner outreach
 
-Milestone 6 needs five design partner conversations before hosted features are justified. Use the message in `docs/product/distribution.md`, then record:
+Milestone 6 needs five design partner conversations before hosted features are justified. Use the message in `docs/product/distribution.md` and the blank template in `docs/demo/design-partner-feedback.md`, then record:
 
 - repo or company;
 - AI feature type;

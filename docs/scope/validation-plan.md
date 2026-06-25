@@ -83,4 +83,6 @@ Keep:
 - screenshots of useful PR summaries;
 - examples of false positives and false negatives.
 
+Use `docs/demo/design-partner-feedback.md` as the blank structure for design partner notes.
+
 Store private notes outside the public repo if they contain customer data.

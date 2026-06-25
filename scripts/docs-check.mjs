@@ -4,6 +4,7 @@ import path from "node:path"
 const requiredPaths = [
   "AGENTS.md",
   "README.md",
+  "docs/demo/design-partner-feedback.md",
   "docs/demo/public-demo.md",
   "docs/agentic/project-skills.md",
   "docs/product/brief.md",
@@ -43,11 +44,21 @@ const requiredDemoPhrases = [
   "Passing PR",
   "Failing PR",
   "GitHub Actions",
+  "docs/demo/design-partner-feedback.md",
   "verdictci-result.json",
   "examples/support-bot/verdictci-pass.yaml",
   "examples/support-bot/verdictci-fail.yaml",
 ]
+const requiredFeedbackPhrases = [
+  "Conversation metadata",
+  "Fit check",
+  "Problem evidence",
+  "Demo reproduction",
+  "Product signals",
+  "Private notes location",
+]
 let missingDemoPhrases = []
+let missingFeedbackPhrases = []
 
 try {
   const demo = await readFile("docs/demo/public-demo.md", "utf8")
@@ -56,7 +67,19 @@ try {
   missingDemoPhrases = requiredDemoPhrases
 }
 
-if (missingPaths.length > 0 || missingReadmeLinks.length > 0 || missingDemoPhrases.length > 0) {
+try {
+  const feedback = await readFile("docs/demo/design-partner-feedback.md", "utf8")
+  missingFeedbackPhrases = requiredFeedbackPhrases.filter((phrase) => !feedback.includes(phrase))
+} catch {
+  missingFeedbackPhrases = requiredFeedbackPhrases
+}
+
+if (
+  missingPaths.length > 0 ||
+  missingReadmeLinks.length > 0 ||
+  missingDemoPhrases.length > 0 ||
+  missingFeedbackPhrases.length > 0
+) {
   if (missingPaths.length > 0) {
     console.error(`Missing required docs: ${missingPaths.join(", ")}`)
   }
@@ -65,6 +88,11 @@ if (missingPaths.length > 0 || missingReadmeLinks.length > 0 || missingDemoPhras
   }
   if (missingDemoPhrases.length > 0) {
     console.error(`Public demo guide is missing phrases: ${missingDemoPhrases.join(", ")}`)
+  }
+  if (missingFeedbackPhrases.length > 0) {
+    console.error(
+      `Design partner feedback template is missing phrases: ${missingFeedbackPhrases.join(", ")}`,
+    )
   }
   process.exitCode = 1
 }
