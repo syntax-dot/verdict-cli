@@ -14,6 +14,24 @@ Expected:
 - required keywords appear;
 - no unresolved placeholder token remains in committed docs.
 
+## Public demo QA
+
+Run:
+
+```bash
+pnpm docs:check
+pnpm verdictci run --config examples/support-bot/verdictci-pass.yaml --output .tmp/pass-result.json --fixture-mode
+pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .tmp/fail-result.json --summary .tmp/fail-summary.md --fixture-mode
+```
+
+Expected:
+
+- README links to `docs/demo/public-demo.md`;
+- public demo guide documents Passing PR, Failing PR, GitHub Actions, and `verdictci-result.json`;
+- passing demo exits `0`;
+- failing demo exits `1`;
+- failing Markdown summary begins with `# VerdictCI: failed`.
+
 ## CLI QA
 
 Milestone 1 CLI skeleton:

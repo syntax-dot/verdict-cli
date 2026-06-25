@@ -4,6 +4,7 @@ import path from "node:path"
 const requiredPaths = [
   "AGENTS.md",
   "README.md",
+  "docs/demo/public-demo.md",
   "docs/agentic/project-skills.md",
   "docs/product/brief.md",
   "docs/scope/mvp.md",
@@ -17,6 +18,7 @@ const requiredPaths = [
 ]
 
 const requiredReadmeLinks = [
+  "docs/demo/public-demo.md",
   "docs/product/brief.md",
   "docs/scope/mvp.md",
   "docs/architecture/overview.md",
@@ -37,13 +39,32 @@ for (const relativePath of requiredPaths) {
 
 const readme = await readFile("README.md", "utf8")
 const missingReadmeLinks = requiredReadmeLinks.filter((link) => !readme.includes(link))
+const requiredDemoPhrases = [
+  "Passing PR",
+  "Failing PR",
+  "GitHub Actions",
+  "verdictci-result.json",
+  "examples/support-bot/verdictci-pass.yaml",
+  "examples/support-bot/verdictci-fail.yaml",
+]
+let missingDemoPhrases = []
 
-if (missingPaths.length > 0 || missingReadmeLinks.length > 0) {
+try {
+  const demo = await readFile("docs/demo/public-demo.md", "utf8")
+  missingDemoPhrases = requiredDemoPhrases.filter((phrase) => !demo.includes(phrase))
+} catch {
+  missingDemoPhrases = requiredDemoPhrases
+}
+
+if (missingPaths.length > 0 || missingReadmeLinks.length > 0 || missingDemoPhrases.length > 0) {
   if (missingPaths.length > 0) {
     console.error(`Missing required docs: ${missingPaths.join(", ")}`)
   }
   if (missingReadmeLinks.length > 0) {
     console.error(`README.md is missing links: ${missingReadmeLinks.join(", ")}`)
+  }
+  if (missingDemoPhrases.length > 0) {
+    console.error(`Public demo guide is missing phrases: ${missingDemoPhrases.join(", ")}`)
   }
   process.exitCode = 1
 }

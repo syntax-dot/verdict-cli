@@ -120,6 +120,8 @@ Exit criteria:
 
 Goal: publish a reproducible demo.
 
+Status: started.
+
 Deliverables:
 
 - support bot example;
@@ -127,6 +129,13 @@ Deliverables:
 - failing PR;
 - README walkthrough;
 - short demo video or GIF.
+
+Implemented boundary:
+
+- README links directly to the public demo path;
+- `docs/demo/public-demo.md` documents passing and failing local PR scenarios;
+- the demo guide documents the GitHub Actions workflow and `verdictci-result.json` artifact;
+- docs checks require the public demo guide and README link.
 
 Exit criteria:
 

@@ -40,6 +40,8 @@ Avoid enterprise AI governance as the first market. It has bigger contracts, but
 
 ## Repository start path
 
+To reproduce the working demo first, start with the [Public demo](docs/demo/public-demo.md).
+
 Read these documents in order:
 
 1. [Product brief](docs/product/brief.md)
@@ -55,7 +57,29 @@ Read these documents in order:
 
 For implementation work, start Codex from the repository root and ask it to read `AGENTS.md` first.
 
-## Recommended first milestone
+## Quick demo
+
+Install dependencies:
+
+```bash
+pnpm install
+```
+
+Run a passing support bot eval:
+
+```bash
+pnpm verdictci run --config examples/support-bot/verdictci-pass.yaml --output .tmp/pass-result.json --fixture-mode
+```
+
+Run a failing support bot eval:
+
+```bash
+pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .tmp/fail-result.json --summary .tmp/fail-summary.md --fixture-mode
+```
+
+The failing run exits `1`, writes `verdictci-result.json`-compatible JSON, and writes a Markdown summary that names the failed case.
+
+## Public demo milestone
 
 The first public milestone is a working GitHub Action demo:
 
@@ -119,6 +143,7 @@ The first version must not become:
 AGENTS.md
 README.md
 docs/
+  demo/
   product/
   scope/
   architecture/
@@ -129,13 +154,6 @@ docs/
   templates/
   qa/
 .github/workflows/docs-checks.yml
+.github/workflows/verdictci.yml
 .codex/skills/
-```
-
-## Immediate next action
-
-Create a new repository named `verdictci` or `verdictci-labs`, copy this starter pack into it, initialize the package manager, and ask Codex:
-
-```text
-Read AGENTS.md, docs/product/brief.md, docs/scope/mvp.md, docs/specs/cli.md, and docs/implementation/roadmap.md. Then create a detailed implementation plan for Milestone 1 only. Do not write production code until the plan includes tests and manual QA evidence.
 ```
