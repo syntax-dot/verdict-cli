@@ -73,9 +73,11 @@ const requiredFeedbackPhrases = [
 const requiredReleasePhrases = [
   "syntax-dot/verdict-cli",
   "verdict-cli",
-  "Package strategy gate",
+  "verdictci",
+  "Bundled package strategy",
   "Required verification",
   "Package smoke gate",
+  "pnpm package:smoke",
   "Public transfer gate",
   "Do not publish under `verdict-cli`",
 ]

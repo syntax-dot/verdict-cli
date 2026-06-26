@@ -18,6 +18,7 @@ docs:check
   - verify file list
   - grep required headings
   - grep public release checklist terms
+  - grep package smoke terms
   - grep forbidden placeholders
   - grep forbidden MVP scope creep phrases
 ```

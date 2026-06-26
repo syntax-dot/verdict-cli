@@ -81,6 +81,14 @@ pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .t
 
 The failing run exits `1`, writes `verdictci-result.json`-compatible JSON, and writes a Markdown summary that names the failed case.
 
+After the npm package is published, install the CLI as:
+
+```bash
+npm install -D verdictci
+```
+
+The package exposes the `verdictci` binary.
+
 ## Public demo milestone
 
 The first public milestone is a working GitHub Action demo:
@@ -98,14 +106,14 @@ Do not build accounts, billing, dashboards, or a GitHub App before this demo is 
 
 The planned public repository is [syntax-dot/verdict-cli](https://github.com/syntax-dot/verdict-cli). It is the launch target under the maintainer's personal GitHub account while the product keeps the VerdictCI brand.
 
-Milestone 7 prepares the repository for that move:
+Milestones 7 and 8 prepare the repository for that move:
 
 - OSS trust files: `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
 - issue and pull request templates;
 - release checklist for the public transfer;
-- npm package name and package strategy gates before publication.
+- npm package `verdictci` with a bundled internal core and package smoke gate.
 
-The npm package name is not finalized. A registry check on 2026-06-26 showed `verdict-cli` is already published by another package, so VerdictCI should use a controlled scoped package or the available `verdictci` name after the maintainer confirms npm account ownership.
+The npm package name is `verdictci`. A registry check on 2026-06-26 showed `verdict-cli` is already published by another package, while `verdictci` was not found.
 
 ## Name
 
@@ -116,7 +124,7 @@ Why this name:
 - it communicates a CI verdict;
 - it works for prompts, agents, and RAG, not only prompt testing;
 - it is developer-tool shaped;
-- npm checks from 2026-06-26 showed `verdictci`, `@verdictci/cli`, `@syntax-dot/verdict-cli`, and `@syntax-dot/verdictci` were not found, while `verdict-cli` was already published as version `0.1.1`.
+- npm checks from 2026-06-26 showed `verdictci`, `@verdictci/cli`, `@syntax-dot/verdict-cli`, and `@syntax-dot/verdictci` were not found, while `verdict-cli` was already published as version `0.1.1`. The selected npm package name is `verdictci`.
 
 This is not legal clearance. Before public launch, check GitHub organization availability, domains, and trademarks.
 

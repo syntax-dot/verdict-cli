@@ -163,7 +163,30 @@ Exit criteria:
 - lint, typecheck, tests, build, and manual fixture QA pass;
 - no `.tmp/`, `.omo/`, raw secrets, private prompts, raw outputs, or local IDE files are staged;
 - public transfer is approved separately after verification;
-- npm publish is blocked until package name and package strategy are finalized.
+- npm publish is resolved in Milestone 8 with package name `verdictci` and bundled internal core.
+
+## Milestone 8: npm package smoke
+
+Goal: make VerdictCI installable as one npm package with the `verdictci` binary.
+
+Status: started.
+
+Deliverables:
+
+- root package named `verdictci`;
+- root package exposes `bin.verdictci`;
+- root build emits bundled CLI artifact at `dist/index.js`;
+- internal `packages/core` code is bundled into the CLI artifact;
+- third-party runtime packages are declared as normal npm dependencies;
+- `pnpm package:smoke` packs, installs, runs help, and runs a fixture through the installed binary.
+
+Exit criteria:
+
+- `pnpm package:smoke` passes;
+- packed package contains only intended release files;
+- packed package contains no unresolved `workspace:*` dependency;
+- installed `verdictci --help` exits `0`;
+- installed `verdictci run --config examples/support-bot/verdictci-pass.yaml --output result.json --fixture-mode` exits `0`.
 
 ## Post-MVP
 

@@ -129,7 +129,7 @@ Phase 2: public repo + private SaaS repo if needed.
 
 Plan for:
 
-- npm package: a controlled scope such as `@syntax-dot/verdictci` or `@syntax-dot/verdict-cli`, unless `@verdictci/cli` becomes available under a dedicated npm organization;
+- npm package: `verdictci`;
 - GitHub Action: `syntax-dot/verdict-cli@v1` for the personal-account launch, with `verdictci/action@v1` as the later organization path;
 - Docker image later for isolated runner use;
 - Homebrew later only if developer demand appears.

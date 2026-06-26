@@ -26,6 +26,7 @@ pnpm typecheck
 pnpm test
 pnpm test:e2e
 pnpm build
+pnpm package:smoke
 pnpm verdictci --help
 pnpm verdictci run --config examples/support-bot/verdictci-pass.yaml --output .tmp/pass-result.json --fixture-mode
 pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .tmp/fail-result.json --summary .tmp/fail-summary.md --fixture-mode
@@ -35,7 +36,8 @@ Expected:
 
 - README links to `docs/release/public-oss-release.md`;
 - public release checklist names `syntax-dot/verdict-cli`;
-- package publication is gated on npm name and package strategy;
+- package publication uses npm package `verdictci`;
+- package smoke installs and runs the packed artifact;
 - passing fixture exits `0`;
 - failing fixture exits `1`;
 - failing Markdown summary begins with `# VerdictCI: failed`;

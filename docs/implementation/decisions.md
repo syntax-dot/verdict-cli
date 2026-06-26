@@ -124,3 +124,32 @@ Consequences:
 - `@verdictci/core` owns schema validation and result artifact validation;
 - future adapters should normalize into the same typed result model instead of bypassing it;
 - dependency additions beyond this must still be justified here.
+
+## ADR-007: Single npm package with bundled internal core
+
+Status: accepted.
+
+Decision:
+
+Publish VerdictCI as the unscoped npm package `verdictci`.
+
+The root package owns the public `verdictci` binary and builds `dist/index.js` with the internal `packages/core` code bundled into the CLI artifact. The internal workspace package names remain useful for source organization, but they are not separate npm publication units in the MVP.
+
+Third-party runtime packages remain normal npm dependencies:
+
+- `commander`
+- `yaml`
+- `zod`
+
+Reason:
+
+- users install one package and get one binary;
+- npm publication does not depend on a `@verdictci` organization or personal npm scope;
+- the public repo can stay under `syntax-dot/verdict-cli` while the npm package keeps the product name;
+- a single package avoids exposing `workspace:*` dependencies to users.
+
+Consequences:
+
+- package smoke must verify the packed tarball, not only local source execution;
+- `packages/core` remains internal until there is a concrete reason to publish a public API package;
+- promptfoo remains an external backend command rather than a bundled dependency.
