@@ -40,12 +40,6 @@ importers:
         specifier: ^4.0.13
         version: 4.1.9(@opentelemetry/api@1.9.1)(@types/node@24.13.2)(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(tsx@4.22.4)(yaml@2.9.0))
 
-  .tmp/package-smoke/install:
-    dependencies:
-      verdictci:
-        specifier: file:E:/verdictci/.tmp/package-smoke/pack/verdictci-0.1.0.tgz
-        version: file:.tmp/package-smoke/pack/verdictci-0.1.0.tgz
-
   packages/cli:
     dependencies:
       '@verdictci/core':
@@ -3815,12 +3809,6 @@ packages:
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
-
-  verdictci@file:.tmp/package-smoke/pack/verdictci-0.1.0.tgz:
-    resolution: {integrity: sha512-x84xXrJwuZjtXDGwritueMMG1wXE3apmXwrSSKb3WITiBI7T1WkKRrv9NVavq30+UNwhtC9yvFC8eYGBZkE4+g==, tarball: file:.tmp/package-smoke/pack/verdictci-0.1.0.tgz}
-    version: 0.1.0
-    engines: {node: '>=24.0.0', pnpm: '>=11.0.0'}
-    hasBin: true
 
   version-range@4.15.0:
     resolution: {integrity: sha512-Ck0EJbAGxHwprkzFO966t4/5QkRuzh+/I1RxhLgUKKwEn+Cd8NwM60mE3AqBZg5gYODoXW0EFsQvbZjRlvdqbg==}
@@ -8258,12 +8246,6 @@ snapshots:
     optional: true
 
   vary@1.1.2: {}
-
-  verdictci@file:.tmp/package-smoke/pack/verdictci-0.1.0.tgz:
-    dependencies:
-      commander: 14.0.2
-      yaml: 2.9.0
-      zod: 4.4.3
 
   version-range@4.15.0: {}
 

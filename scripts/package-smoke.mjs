@@ -1,74 +1,78 @@
 import { spawn } from "node:child_process"
-import { access, cp, mkdir, readFile, rm, writeFile } from "node:fs/promises"
+import { access, cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
+import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
-const smokeRoot = path.join(repoRoot, ".tmp", "package-smoke")
+const smokeRoot = await mkdtemp(path.join(tmpdir(), "verdictci-package-smoke-"))
 const packDir = path.join(smokeRoot, "pack")
 const installDir = path.join(smokeRoot, "install")
 
-await rm(smokeRoot, { recursive: true, force: true })
-await mkdir(packDir, { recursive: true })
-await mkdir(installDir, { recursive: true })
+try {
+  await mkdir(packDir, { recursive: true })
+  await mkdir(installDir, { recursive: true })
 
-await runPnpm(["build"], repoRoot)
+  await runPnpm(["build"], repoRoot)
 
-const packOutput = await runCommand({
-  command: "npm",
-  args: ["pack", "--json", "--pack-destination", packDir],
-  cwd: repoRoot,
-  shell: process.platform === "win32",
-})
-const packedArtifact = parsePackOutput(packOutput.stdout)
-verifyPackageFiles(packedArtifact.files)
+  const packOutput = await runCommand({
+    command: "npm",
+    args: ["pack", "--json", "--pack-destination", packDir],
+    cwd: repoRoot,
+    shell: process.platform === "win32",
+  })
+  const packedArtifact = parsePackOutput(packOutput.stdout)
+  verifyPackageFiles(packedArtifact.files)
 
-const tarballPath = path.join(packDir, packedArtifact.filename)
-await writeFile(
-  path.join(installDir, "package.json"),
-  `${JSON.stringify({ private: true, type: "module" }, null, 2)}\n`,
-  "utf8",
-)
-await runPnpm(["add", tarballPath, "--ignore-scripts"], installDir)
-await cp(
-  path.join(repoRoot, "examples", "support-bot"),
-  path.join(installDir, "examples", "support-bot"),
-  { recursive: true },
-)
+  const tarballPath = path.join(packDir, packedArtifact.filename)
+  await writeFile(
+    path.join(installDir, "package.json"),
+    `${JSON.stringify({ private: true, type: "module" }, null, 2)}\n`,
+    "utf8",
+  )
+  await runPnpm(["add", tarballPath, "--ignore-scripts"], installDir)
+  await cp(
+    path.join(repoRoot, "examples", "support-bot"),
+    path.join(installDir, "examples", "support-bot"),
+    { recursive: true },
+  )
 
-const verdictci = verdictciBinaryPath(installDir)
-const help = await runCommand({
-  command: verdictci,
-  args: ["--help"],
-  cwd: installDir,
-  shell: process.platform === "win32",
-})
-assertIncludes(help.stdout, "Usage:")
-assertIncludes(help.stdout, "run")
-assertIncludes(help.stdout, "--config")
-assertIncludes(help.stdout, "--output")
+  const verdictci = verdictciBinaryPath(installDir)
+  const help = await runCommand({
+    command: verdictci,
+    args: ["--help"],
+    cwd: installDir,
+    shell: process.platform === "win32",
+  })
+  assertIncludes(help.stdout, "Usage:")
+  assertIncludes(help.stdout, "run")
+  assertIncludes(help.stdout, "--config")
+  assertIncludes(help.stdout, "--output")
 
-const resultPath = path.join(installDir, "result.json")
-await runCommand({
-  command: verdictci,
-  args: [
-    "run",
-    "--config",
-    "examples/support-bot/verdictci-pass.yaml",
-    "--output",
-    resultPath,
-    "--fixture-mode",
-  ],
-  cwd: installDir,
-  shell: process.platform === "win32",
-})
-await access(resultPath)
-const result = JSON.parse(await readFile(resultPath, "utf8"))
-if (result.schemaVersion !== 1 || result.summary?.verdict !== "passed") {
-  throw new Error("Installed package fixture run did not write a passing VerdictCI artifact.")
+  const resultPath = path.join(installDir, "result.json")
+  await runCommand({
+    command: verdictci,
+    args: [
+      "run",
+      "--config",
+      "examples/support-bot/verdictci-pass.yaml",
+      "--output",
+      resultPath,
+      "--fixture-mode",
+    ],
+    cwd: installDir,
+    shell: process.platform === "win32",
+  })
+  await access(resultPath)
+  const result = JSON.parse(await readFile(resultPath, "utf8"))
+  if (result.schemaVersion !== 1 || result.summary?.verdict !== "passed") {
+    throw new Error("Installed package fixture run did not write a passing VerdictCI artifact.")
+  }
+
+  console.log(`Package smoke passed: ${packedArtifact.filename}`)
+} finally {
+  await rm(smokeRoot, { recursive: true, force: true })
 }
-
-console.log(`Package smoke passed: ${tarballPath}`)
 
 function runPnpm(args, cwd) {
   const pnpmEntrypoint = process.env.npm_execpath

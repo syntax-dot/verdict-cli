@@ -6,7 +6,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "verdictci": "./dist/index.js"
+    "verdictci": "dist/index.js"
   },
   "files": [
     "dist/",
