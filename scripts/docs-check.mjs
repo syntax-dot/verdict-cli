@@ -3,9 +3,17 @@ import path from "node:path"
 
 const requiredPaths = [
   "AGENTS.md",
+  "CHANGELOG.md",
+  "CONTRIBUTING.md",
+  "LICENSE",
   "README.md",
+  "SECURITY.md",
+  ".github/ISSUE_TEMPLATE/bug_report.md",
+  ".github/ISSUE_TEMPLATE/feature_request.md",
+  ".github/pull_request_template.md",
   "docs/demo/design-partner-feedback.md",
   "docs/demo/public-demo.md",
+  "docs/release/public-oss-release.md",
   "docs/agentic/project-skills.md",
   "docs/product/brief.md",
   "docs/scope/mvp.md",
@@ -19,7 +27,12 @@ const requiredPaths = [
 ]
 
 const requiredReadmeLinks = [
+  "CHANGELOG.md",
+  "CONTRIBUTING.md",
+  "LICENSE",
+  "SECURITY.md",
   "docs/demo/public-demo.md",
+  "docs/release/public-oss-release.md",
   "docs/product/brief.md",
   "docs/scope/mvp.md",
   "docs/architecture/overview.md",
@@ -57,8 +70,18 @@ const requiredFeedbackPhrases = [
   "Product signals",
   "Private notes location",
 ]
+const requiredReleasePhrases = [
+  "syntax-dot/verdict-cli",
+  "verdict-cli",
+  "Package strategy gate",
+  "Required verification",
+  "Package smoke gate",
+  "Public transfer gate",
+  "Do not publish under `verdict-cli`",
+]
 let missingDemoPhrases = []
 let missingFeedbackPhrases = []
+let missingReleasePhrases = []
 
 try {
   const demo = await readFile("docs/demo/public-demo.md", "utf8")
@@ -74,11 +97,19 @@ try {
   missingFeedbackPhrases = requiredFeedbackPhrases
 }
 
+try {
+  const release = await readFile("docs/release/public-oss-release.md", "utf8")
+  missingReleasePhrases = requiredReleasePhrases.filter((phrase) => !release.includes(phrase))
+} catch {
+  missingReleasePhrases = requiredReleasePhrases
+}
+
 if (
   missingPaths.length > 0 ||
   missingReadmeLinks.length > 0 ||
   missingDemoPhrases.length > 0 ||
-  missingFeedbackPhrases.length > 0
+  missingFeedbackPhrases.length > 0 ||
+  missingReleasePhrases.length > 0
 ) {
   if (missingPaths.length > 0) {
     console.error(`Missing required docs: ${missingPaths.join(", ")}`)
@@ -92,6 +123,11 @@ if (
   if (missingFeedbackPhrases.length > 0) {
     console.error(
       `Design partner feedback template is missing phrases: ${missingFeedbackPhrases.join(", ")}`,
+    )
+  }
+  if (missingReleasePhrases.length > 0) {
+    console.error(
+      `Public release checklist is missing phrases: ${missingReleasePhrases.join(", ")}`,
     )
   }
   process.exitCode = 1

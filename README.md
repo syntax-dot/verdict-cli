@@ -42,6 +42,8 @@ Avoid enterprise AI governance as the first market. It has bigger contracts, but
 
 To reproduce the working demo first, start with the [Public demo](docs/demo/public-demo.md).
 
+For the public open-source launch path, use the [Public OSS release checklist](docs/release/public-oss-release.md).
+
 Read these documents in order:
 
 1. [Product brief](docs/product/brief.md)
@@ -92,6 +94,19 @@ The first public milestone is a working GitHub Action demo:
 
 Do not build accounts, billing, dashboards, or a GitHub App before this demo is boringly reliable.
 
+## Public repository path
+
+The planned public repository is [syntax-dot/verdict-cli](https://github.com/syntax-dot/verdict-cli). It is the launch target under the maintainer's personal GitHub account while the product keeps the VerdictCI brand.
+
+Milestone 7 prepares the repository for that move:
+
+- OSS trust files: `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
+- issue and pull request templates;
+- release checklist for the public transfer;
+- npm package name and package strategy gates before publication.
+
+The npm package name is not finalized. A registry check on 2026-06-26 showed `verdict-cli` is already published by another package, so VerdictCI should use a controlled scoped package or the available `verdictci` name after the maintainer confirms npm account ownership.
+
 ## Name
 
 Working brand: **VerdictCI**.
@@ -101,7 +116,7 @@ Why this name:
 - it communicates a CI verdict;
 - it works for prompts, agents, and RAG, not only prompt testing;
 - it is developer-tool shaped;
-- npm checks from 2026-06-22 showed `verdictci` and `@verdictci/cli` were not found, while `evalgate` was already taken.
+- npm checks from 2026-06-26 showed `verdictci`, `@verdictci/cli`, `@syntax-dot/verdict-cli`, and `@syntax-dot/verdictci` were not found, while `verdict-cli` was already published as version `0.1.1`.
 
 This is not legal clearance. Before public launch, check GitHub organization availability, domains, and trademarks.
 

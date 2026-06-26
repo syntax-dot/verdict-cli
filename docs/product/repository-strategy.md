@@ -15,6 +15,18 @@ Do not publish an empty repo with only aspirations. Build the smallest working C
 - issue templates;
 - roadmap.
 
+## Current launch path
+
+Milestone 7 uses the maintainer's prepared public repository:
+
+```text
+syntax-dot/verdict-cli
+```
+
+This is acceptable for the first public launch because it keeps maintenance under one account and avoids blocking on organization setup. The product brand remains VerdictCI, and the repository can move to a dedicated organization later if adoption justifies it.
+
+Do not transfer the private working repository until release-readiness checks pass and the public package strategy is explicit.
+
 ## Why public
 
 VerdictCI is a developer tool. Public development helps because:
@@ -117,8 +129,8 @@ Phase 2: public repo + private SaaS repo if needed.
 
 Plan for:
 
-- npm package: `@verdictci/cli`;
-- GitHub Action: `verdictci/action@v1`;
+- npm package: a controlled scope such as `@syntax-dot/verdictci` or `@syntax-dot/verdict-cli`, unless `@verdictci/cli` becomes available under a dedicated npm organization;
+- GitHub Action: `syntax-dot/verdict-cli@v1` for the personal-account launch, with `verdictci/action@v1` as the later organization path;
 - Docker image later for isolated runner use;
 - Homebrew later only if developer demand appears.
 

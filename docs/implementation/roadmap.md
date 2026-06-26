@@ -140,7 +140,30 @@ Implemented boundary:
 Exit criteria:
 
 - a new developer can reproduce the demo from README;
-- 5 design partners are contacted.
+- the public feedback path is documented and does not require hosted product features.
+
+## Milestone 7: public OSS and npm release readiness
+
+Goal: prepare the working MVP for a public open-source repository and later npm publication.
+
+Status: started.
+
+Deliverables:
+
+- public repository target documented as `syntax-dot/verdict-cli`;
+- license, changelog, contributing guide, security policy, issue templates, and pull request template;
+- README links to the public release checklist;
+- npm name availability findings documented;
+- package strategy gate documented for the CLI/core workspace split;
+- docs checks require the public-release surface.
+
+Exit criteria:
+
+- `pnpm docs:check` passes;
+- lint, typecheck, tests, build, and manual fixture QA pass;
+- no `.tmp/`, `.omo/`, raw secrets, private prompts, raw outputs, or local IDE files are staged;
+- public transfer is approved separately after verification;
+- npm publish is blocked until package name and package strategy are finalized.
 
 ## Post-MVP
 

@@ -5,7 +5,15 @@ on:
     paths:
       - "README.md"
       - "AGENTS.md"
+      - "CHANGELOG.md"
+      - "CONTRIBUTING.md"
+      - "LICENSE"
+      - "SECURITY.md"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/pull_request_template.md"
       - "docs/**"
+      - "package.json"
+      - "scripts/docs-check.mjs"
   push:
     branches:
       - main
@@ -22,6 +30,14 @@ jobs:
           required=(
             "README.md"
             "AGENTS.md"
+            "CHANGELOG.md"
+            "CONTRIBUTING.md"
+            "LICENSE"
+            "SECURITY.md"
+            ".github/ISSUE_TEMPLATE/bug_report.md"
+            ".github/ISSUE_TEMPLATE/feature_request.md"
+            ".github/pull_request_template.md"
+            "docs/release/public-oss-release.md"
             "docs/product/brief.md"
             "docs/product/founder-guide.md"
             "docs/product/repository-strategy.md"
@@ -46,7 +62,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -R -n -E "T[B]D|TO[D]O|F[I]XME" README.md AGENTS.md docs; then
+          if grep -R -n -E "T[B]D|TO[D]O|F[I]XME" README.md AGENTS.md CHANGELOG.md CONTRIBUTING.md SECURITY.md docs .github/ISSUE_TEMPLATE .github/pull_request_template.md; then
             echo "Unresolved placeholder found"
             exit 1
           fi
+      - name: Run repository docs check
+        shell: bash
+        run: node scripts/docs-check.mjs

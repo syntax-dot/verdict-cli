@@ -39,7 +39,26 @@ Success:
 - 5 developers can run it without help;
 - 3 ask for support for their repo or stack.
 
-### Stage 3: Design partners
+### Stage 3: Public OSS launch
+
+Publish the CLI and Action repo publicly after the release checklist passes.
+
+Success:
+
+- 20 GitHub stars from relevant developers;
+- 100 npm downloads or equivalent tarball installs after package publication;
+- 5 independent demo reproductions;
+- 3 useful issues or feature requests from external users;
+- 1 external repository runs the GitHub Action without maintainer help.
+
+Signals to inspect:
+
+- users clone and run the support bot demo;
+- users ask about package installation, CI wiring, or result artifacts;
+- users request eval examples for their stack;
+- users report confusing setup steps.
+
+### Stage 4: Optional design partners
 
 Install VerdictCI in 5 real repositories.
 
@@ -49,7 +68,9 @@ Success:
 - at least 1 catches or clarifies a real regression;
 - at least 2 ask for hosted history, baseline approval, or better PR UX.
 
-### Stage 4: Paid beta
+This stage is useful but no longer blocks the first public release.
+
+### Stage 5: Paid beta
 
 Offer a small paid plan:
 

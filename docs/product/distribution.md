@@ -6,6 +6,26 @@ VerdictCI should spread through examples, pull requests, and GitHub workflows.
 
 The product is visible when it comments on or summarizes a PR. That means the best marketing asset is a real PR where a prompt change fails an eval and VerdictCI explains why.
 
+## Open-source first launch
+
+The current distribution strategy is public OSS first, not design-partner first.
+
+Launch from the prepared public repository:
+
+```text
+syntax-dot/verdict-cli
+```
+
+The public repository should show:
+
+- a working CLI command;
+- a reproducible failing support bot demo;
+- a GitHub Action workflow;
+- the `verdictci-result.json` artifact;
+- license, changelog, security policy, contribution guide, and issue templates.
+
+Do not block launch on finding five design partners. Use public issues, stars, npm downloads, demo reproductions, and concrete feature requests as the first feedback loop. Direct outreach remains useful, but it should amplify the public demo instead of becoming a launch dependency.
+
 ## Primary channels
 
 1. GitHub Marketplace

@@ -11,8 +11,35 @@ pnpm docs:check
 Expected:
 
 - required docs exist;
+- public release files exist;
 - required keywords appear;
 - no unresolved placeholder token remains in committed docs.
+
+## Public release QA
+
+Run:
+
+```bash
+pnpm docs:check
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm test:e2e
+pnpm build
+pnpm verdictci --help
+pnpm verdictci run --config examples/support-bot/verdictci-pass.yaml --output .tmp/pass-result.json --fixture-mode
+pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .tmp/fail-result.json --summary .tmp/fail-summary.md --fixture-mode
+```
+
+Expected:
+
+- README links to `docs/release/public-oss-release.md`;
+- public release checklist names `syntax-dot/verdict-cli`;
+- package publication is gated on npm name and package strategy;
+- passing fixture exits `0`;
+- failing fixture exits `1`;
+- failing Markdown summary begins with `# VerdictCI: failed`;
+- no release step requires a hosted service, account system, billing, dashboard, GitHub App, SSO, or enterprise governance.
 
 ## Public demo QA
 
