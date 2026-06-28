@@ -119,7 +119,7 @@ pnpm package:smoke
 Expected:
 
 - `npm pack` creates `syntaxname-verdictci-0.1.0.tgz`;
-- package contents include `dist/index.js`, `README.md`, `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
+- package contents include `bin/verdictci.js`, `dist/index.js`, `README.md`, `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
 - package contents do not include `.tmp/`, `.omo/`, source-control metadata, local evidence, env files, raw secrets, generated result artifacts, workspace source packages, scripts, docs, examples, source maps, or TypeScript build info;
 - the tarball installs in a clean temporary project;
 - installed `verdictci --help` exits `0`;

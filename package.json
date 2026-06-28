@@ -6,9 +6,10 @@
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "verdictci": "dist/index.js"
+    "verdictci": "bin/verdictci.js"
   },
   "files": [
+    "bin/",
     "dist/",
     "README.md",
     "LICENSE",

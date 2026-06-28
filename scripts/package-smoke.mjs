@@ -172,6 +172,7 @@ function packFilePath(file) {
 function verifyPackageFiles(files) {
   const requiredFiles = [
     "package.json",
+    "bin/verdictci.js",
     "dist/index.js",
     "README.md",
     "LICENSE",
