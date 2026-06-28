@@ -1,5 +1,5 @@
 {
-  "name": "verdictci",
+  "name": "@syntaxname/verdictci",
   "version": "0.1.0",
   "description": "Eval-as-CI for LLM, agent, and RAG applications.",
   "license": "MIT",
@@ -38,6 +38,7 @@
     "docs:check": "node scripts/docs-check.mjs",
     "lint": "biome check .",
     "package:smoke": "node scripts/package-smoke.mjs",
+    "prepack": "pnpm build",
     "test": "vitest run",
     "test:e2e": "vitest run packages/cli/test",
     "typecheck": "tsc --project tsconfig.json --noEmit",

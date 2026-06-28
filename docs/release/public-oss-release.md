@@ -19,7 +19,7 @@ Milestone 7 includes:
 - license, changelog, contributing guide, security policy, and issue templates;
 - README links that make the demo and release path easy to find;
 - a public transfer checklist for `syntax-dot/verdict-cli`;
-- npm package `verdictci`;
+- npm package `@syntaxname/verdictci`;
 - bundled internal core packaging;
 - a package smoke gate before any publish attempt;
 - docs checks that keep the public-release surface present.
@@ -37,12 +37,13 @@ Milestone 7 does not include:
 
 ## Current npm name findings
 
-Registry checks on 2026-06-26 found:
+Registry checks on 2026-06-28 found:
 
 | Package | Result |
 | --- | --- |
 | `verdict-cli` | already published as `0.1.1` |
-| `verdictci` | not found |
+| `verdictci` | rejected by npm similarity policy because it is too similar to `verdict-ci` |
+| `@syntaxname/verdictci` | not found |
 | `@verdictci/cli` | not found |
 | `@syntax-dot/verdict-cli` | not found |
 | `@syntax-dot/verdictci` | not found |
@@ -50,10 +51,10 @@ Registry checks on 2026-06-26 found:
 The selected npm package name is:
 
 ```text
-verdictci
+@syntaxname/verdictci
 ```
 
-Do not publish under `verdict-cli`.
+Do not publish under `verdict-cli` or the unscoped `verdictci`.
 
 ## Bundled package strategy
 
@@ -65,7 +66,7 @@ The current workspace has separate packages:
 These remain internal development packages. The published npm artifact is the root package:
 
 ```text
-verdictci
+@syntaxname/verdictci
 ```
 
 The root package builds `dist/index.js` with `packages/core` bundled into the CLI. Third-party runtime packages stay as normal npm dependencies:
@@ -99,7 +100,7 @@ pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .t
 Expected:
 
 - help exits `0`;
-- package smoke installs the packed `verdictci` artifact in a clean temporary project;
+- package smoke installs the packed `@syntaxname/verdictci` artifact in a clean temporary project;
 - installed `verdictci --help` exits `0`;
 - passing fixture exits `0`;
 - failing fixture exits `1`;
@@ -117,7 +118,7 @@ pnpm package:smoke
 
 Expected:
 
-- `npm pack` creates `verdictci-0.1.0.tgz`;
+- `npm pack` creates `syntaxname-verdictci-0.1.0.tgz`;
 - package contents include `dist/index.js`, `README.md`, `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
 - package contents do not include `.tmp/`, `.omo/`, source-control metadata, local evidence, env files, raw secrets, generated result artifacts, workspace source packages, scripts, docs, examples, source maps, or TypeScript build info;
 - the tarball installs in a clean temporary project;

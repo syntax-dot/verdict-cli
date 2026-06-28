@@ -13,8 +13,6 @@ try {
   await mkdir(packDir, { recursive: true })
   await mkdir(installDir, { recursive: true })
 
-  await runPnpm(["build"], repoRoot)
-
   const packOutput = await runCommand({
     command: "npm",
     args: ["pack", "--json", "--pack-destination", packDir],

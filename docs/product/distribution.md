@@ -19,7 +19,7 @@ syntax-dot/verdict-cli
 The public repository should show:
 
 - a working CLI command;
-- npm install path `npm install -D verdictci`;
+- npm install path `npm install -D @syntaxname/verdictci`;
 - a reproducible failing support bot demo;
 - a GitHub Action workflow;
 - the `verdictci-result.json` artifact;

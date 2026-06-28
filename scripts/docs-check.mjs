@@ -74,6 +74,7 @@ const requiredReleasePhrases = [
   "syntax-dot/verdict-cli",
   "verdict-cli",
   "verdictci",
+  "@syntaxname/verdictci",
   "Bundled package strategy",
   "Required verification",
   "Package smoke gate",

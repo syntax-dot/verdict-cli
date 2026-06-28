@@ -84,7 +84,7 @@ The failing run exits `1`, writes `verdictci-result.json`-compatible JSON, and w
 After the npm package is published, install the CLI as:
 
 ```bash
-npm install -D verdictci
+npm install -D @syntaxname/verdictci
 ```
 
 The package exposes the `verdictci` binary.
@@ -111,9 +111,9 @@ Milestones 7 and 8 prepare the repository for that move:
 - OSS trust files: `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
 - issue and pull request templates;
 - release checklist for the public transfer;
-- npm package `verdictci` with a bundled internal core and package smoke gate.
+- npm package `@syntaxname/verdictci` with a bundled internal core and package smoke gate.
 
-The npm package name is `verdictci`. A registry check on 2026-06-26 showed `verdict-cli` is already published by another package, while `verdictci` was not found.
+The npm package name is `@syntaxname/verdictci`. Registry checks on 2026-06-28 showed the scoped package was not found, while npm rejected unscoped `verdictci` because it is too similar to the existing `verdict-ci` package.
 
 ## Name
 
@@ -124,7 +124,7 @@ Why this name:
 - it communicates a CI verdict;
 - it works for prompts, agents, and RAG, not only prompt testing;
 - it is developer-tool shaped;
-- npm checks from 2026-06-26 showed `verdictci`, `@verdictci/cli`, `@syntax-dot/verdict-cli`, and `@syntax-dot/verdictci` were not found, while `verdict-cli` was already published as version `0.1.1`. The selected npm package name is `verdictci`.
+- npm checks from 2026-06-28 showed `@syntaxname/verdictci`, `@verdictci/cli`, `@syntax-dot/verdict-cli`, and `@syntax-dot/verdictci` were not found, while `verdict-cli` was already published as version `0.1.1`; npm later rejected unscoped `verdictci` because it is too similar to `verdict-ci`. The selected npm package name is `@syntaxname/verdictci`.
 
 This is not legal clearance. Before public launch, check GitHub organization availability, domains, and trademarks.
 

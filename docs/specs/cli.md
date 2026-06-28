@@ -11,10 +11,10 @@ verdictci
 Package:
 
 ```bash
-verdictci
+@syntaxname/verdictci
 ```
 
-The published `verdictci` npm package exposes the `verdictci` binary and bundles VerdictCI's internal core package into the CLI artifact.
+The published `@syntaxname/verdictci` npm package exposes the `verdictci` binary and bundles VerdictCI's internal core package into the CLI artifact.
 
 ## MVP commands
 

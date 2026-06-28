@@ -131,7 +131,7 @@ Status: accepted.
 
 Decision:
 
-Publish VerdictCI as the unscoped npm package `verdictci`.
+Publish VerdictCI as the scoped npm package `@syntaxname/verdictci`.
 
 The root package owns the public `verdictci` binary and builds `dist/index.js` with the internal `packages/core` code bundled into the CLI artifact. The internal workspace package names remain useful for source organization, but they are not separate npm publication units in the MVP.
 
@@ -144,7 +144,8 @@ Third-party runtime packages remain normal npm dependencies:
 Reason:
 
 - users install one package and get one binary;
-- npm publication does not depend on a `@verdictci` organization or personal npm scope;
+- npm rejected the unscoped `verdictci` name because it is too similar to `verdict-ci`;
+- the maintainer's `syntaxname` npm scope keeps publication unblocked without waiting for a `@verdictci` organization;
 - the public repo can stay under `syntax-dot/verdict-cli` while the npm package keeps the product name;
 - a single package avoids exposing `workspace:*` dependencies to users.
 

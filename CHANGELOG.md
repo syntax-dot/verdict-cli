@@ -15,9 +15,9 @@ Includes:
 - GitHub Action wrapper with job-summary and artifact support;
 - promptfoo backend compatibility for simple local eval suites;
 - reproducible support bot demo and public release checklist.
-- npm package readiness for `verdictci` with bundled internal core and package smoke verification.
+- npm package readiness for `@syntaxname/verdictci` with bundled internal core and package smoke verification.
 
 Known limitations:
 
-- npm publication still requires a maintainer-run `npm publish` after public repository transfer approval;
+- npm publication still requires a maintainer-run `npm publish --access public` after public repository transfer approval;
 - hosted dashboards, accounts, billing, GitHub App behavior, and team governance are outside the MVP.

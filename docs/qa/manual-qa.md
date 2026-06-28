@@ -36,7 +36,7 @@ Expected:
 
 - README links to `docs/release/public-oss-release.md`;
 - public release checklist names `syntax-dot/verdict-cli`;
-- package publication uses npm package `verdictci`;
+- package publication uses npm package `@syntaxname/verdictci`;
 - package smoke installs and runs the packed artifact;
 - passing fixture exits `0`;
 - failing fixture exits `1`;

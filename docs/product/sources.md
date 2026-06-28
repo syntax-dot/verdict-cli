@@ -94,6 +94,8 @@ Source:
 On 2026-06-22:
 
 - `npm view verdictci` returned 404 from this environment.
+- `npm publish verdictci` was later rejected by npm because the name is too similar to `verdict-ci`.
+- `npm view @syntaxname/verdictci` returned 404 from this environment.
 - `npm view @verdictci/cli` returned 404 from this environment.
 - `npm view evalgate` returned an existing package, so `EvalGate` was rejected.
 
