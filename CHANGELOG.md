@@ -2,7 +2,7 @@
 
 All notable user-facing changes to VerdictCI are tracked here.
 
-## 0.1.1 - Unreleased
+## 0.1.1 - 2026-06-29
 
 Package polish for the public npm launch.
 
