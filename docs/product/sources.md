@@ -95,7 +95,8 @@ On 2026-06-22:
 
 - `npm view verdictci` returned 404 from this environment.
 - `npm publish verdictci` was later rejected by npm because the name is too similar to `verdict-ci`.
-- `npm view @syntaxname/verdictci` returned 404 from this environment.
+- `@syntaxname/verdictci` was published as `0.1.0` on 2026-06-28.
+- npm downloads API returned 68 downloads for `@syntaxname/verdictci` for 2026-06-28.
 - `npm view @verdictci/cli` returned 404 from this environment.
 - `npm view evalgate` returned an existing package, so `EvalGate` was rejected.
 

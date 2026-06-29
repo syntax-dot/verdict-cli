@@ -89,7 +89,7 @@ Status: accepted.
 
 Decision:
 
-Use a Node.js 24 LTS, pnpm workspace, and TypeScript stack for the MVP CLI packages.
+Use Node.js 20 or newer, a pnpm workspace, and TypeScript stack for the MVP CLI packages.
 
 Reason:
 
@@ -100,7 +100,7 @@ Reason:
 
 Consequences:
 
-- local development should use Node.js 24 or the bundled Codex runtime when the host Node version is older;
+- local development should use Node.js 20 or newer, or the bundled Codex runtime when the host Node version is older;
 - pnpm 11 build approvals live in `pnpm-workspace.yaml`;
 - package scripts must avoid shelling out to an older globally installed pnpm.
 

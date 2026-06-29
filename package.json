@@ -1,7 +1,19 @@
 {
   "name": "@syntaxname/verdictci",
-  "version": "0.1.0",
-  "description": "Eval-as-CI for LLM, agent, and RAG applications.",
+  "version": "0.1.1",
+  "description": "Fail pull requests when AI behavior regresses.",
+  "keywords": [
+    "ai",
+    "llm",
+    "evals",
+    "ci",
+    "github-actions",
+    "rag",
+    "agents",
+    "promptfoo",
+    "testing"
+  ],
+  "author": "syntaxname",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -30,8 +42,7 @@
   "homepage": "https://github.com/syntax-dot/verdict-cli#readme",
   "packageManager": "pnpm@11.7.0",
   "engines": {
-    "node": ">=24.0.0",
-    "pnpm": ">=11.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "build": "pnpm build:tsc && node scripts/build-package.mjs",

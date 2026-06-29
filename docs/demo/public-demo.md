@@ -4,7 +4,7 @@ This demo shows VerdictCI as a CLI-first and GitHub Action-first eval gate for a
 
 ## Prerequisites
 
-- Node.js 24 or newer.
+- Node.js 20 or newer.
 - pnpm 11 or newer.
 - A clone of this repository.
 

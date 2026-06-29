@@ -2,7 +2,26 @@
 
 Eval-as-CI for LLM, agent, and RAG applications.
 
+[![npm version](https://img.shields.io/npm/v/@syntaxname/verdictci?label=npm)](https://www.npmjs.com/package/@syntaxname/verdictci)
+[![npm downloads](https://img.shields.io/npm/dm/@syntaxname/verdictci)](https://www.npmjs.com/package/@syntaxname/verdictci)
+[![release](https://img.shields.io/github/v/release/syntax-dot/verdict-cli?display_name=tag)](https://github.com/syntax-dot/verdict-cli/releases)
+[![VerdictCI](https://github.com/syntax-dot/verdict-cli/actions/workflows/verdictci.yml/badge.svg)](https://github.com/syntax-dot/verdict-cli/actions/workflows/verdictci.yml)
+[![Docs Checks](https://github.com/syntax-dot/verdict-cli/actions/workflows/docs-checks.yml/badge.svg)](https://github.com/syntax-dot/verdict-cli/actions/workflows/docs-checks.yml)
+[![license](https://img.shields.io/github/license/syntax-dot/verdict-cli)](LICENSE)
+
 VerdictCI is a developer tool that runs AI behavior evaluations in CI and gives every pull request a clear merge verdict: pass, fail, or needs review. The first product is CLI-first and GitHub Action-first. The later product can grow into a GitHub App and SaaS dashboard, but the MVP must prove one thing first: teams can catch prompt, agent, and retrieval regressions before merge.
+
+## Quick start from npm
+
+Requirements: Node.js 20 or newer.
+
+```bash
+npm install -D @syntaxname/verdictci
+npx verdictci --help
+npx verdictci run --config verdictci.yaml --output verdictci-result.json
+```
+
+The package exposes the `verdictci` binary. VerdictCI runs locally by default and writes a machine-readable result artifact for CI.
 
 ## Why this exists
 
@@ -56,10 +75,11 @@ Read these documents in order:
 8. [Codex workflow](docs/agentic/codex-workflow.md)
 9. [Acceptance criteria](docs/qa/acceptance-criteria.md)
 10. [Project skills](docs/agentic/project-skills.md)
+11. [Post-release launch checklist](docs/release/post-release-launch.md)
 
 For implementation work, start Codex from the repository root and ask it to read `AGENTS.md` first.
 
-## Quick demo
+## Repository demo
 
 Install dependencies:
 
@@ -80,14 +100,6 @@ pnpm verdictci run --config examples/support-bot/verdictci-fail.yaml --output .t
 ```
 
 The failing run exits `1`, writes `verdictci-result.json`-compatible JSON, and writes a Markdown summary that names the failed case.
-
-After the npm package is published, install the CLI as:
-
-```bash
-npm install -D @syntaxname/verdictci
-```
-
-The package exposes the `verdictci` binary.
 
 ## Public demo milestone
 
@@ -111,9 +123,10 @@ Milestones 7 and 8 prepare the repository for that move:
 - OSS trust files: `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
 - issue and pull request templates;
 - release checklist for the public transfer;
-- npm package `@syntaxname/verdictci` with a bundled internal core and package smoke gate.
+- npm package `@syntaxname/verdictci` with a bundled internal core and package smoke gate;
+- public `v0.1.0` GitHub release and npm install path.
 
-The npm package name is `@syntaxname/verdictci`. Registry checks on 2026-06-28 showed the scoped package was not found, while npm rejected unscoped `verdictci` because it is too similar to the existing `verdict-ci` package.
+The npm package name is `@syntaxname/verdictci`. The first public package version is `0.1.0`, published on 2026-06-28. Registry checks on 2026-06-28 showed npm rejected unscoped `verdictci` because it is too similar to the existing `verdict-ci` package.
 
 ## Name
 
@@ -124,7 +137,7 @@ Why this name:
 - it communicates a CI verdict;
 - it works for prompts, agents, and RAG, not only prompt testing;
 - it is developer-tool shaped;
-- npm checks from 2026-06-28 showed `@syntaxname/verdictci`, `@verdictci/cli`, `@syntax-dot/verdict-cli`, and `@syntax-dot/verdictci` were not found, while `verdict-cli` was already published as version `0.1.1`; npm later rejected unscoped `verdictci` because it is too similar to `verdict-ci`. The selected npm package name is `@syntaxname/verdictci`.
+- npm checks from 2026-06-28 showed `@syntaxname/verdictci`, `@verdictci/cli`, `@syntax-dot/verdict-cli`, and `@syntax-dot/verdictci` were not found, while `verdict-cli` was already published as version `0.1.1`; npm later rejected unscoped `verdictci` because it is too similar to `verdict-ci`. The selected npm package name is `@syntaxname/verdictci`, published first as `0.1.0`.
 
 This is not legal clearance. Before public launch, check GitHub organization availability, domains, and trademarks.
 

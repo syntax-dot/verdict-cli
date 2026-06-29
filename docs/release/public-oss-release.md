@@ -12,6 +12,12 @@ https://github.com/syntax-dot/verdict-cli.git
 
 This repository is the planned public launch target under the maintainer's personal GitHub account. The brand remains VerdictCI.
 
+Current public release:
+
+- npm package: `@syntaxname/verdictci@0.1.0`;
+- GitHub release: `v0.1.0`;
+- public repository: `syntax-dot/verdict-cli`.
+
 ## Scope
 
 Milestone 7 includes:
@@ -43,7 +49,7 @@ Registry checks on 2026-06-28 found:
 | --- | --- |
 | `verdict-cli` | already published as `0.1.1` |
 | `verdictci` | rejected by npm similarity policy because it is too similar to `verdict-ci` |
-| `@syntaxname/verdictci` | not found |
+| `@syntaxname/verdictci` | published as `0.1.0` on 2026-06-28 |
 | `@verdictci/cli` | not found |
 | `@syntax-dot/verdict-cli` | not found |
 | `@syntax-dot/verdictci` | not found |
@@ -118,7 +124,7 @@ pnpm package:smoke
 
 Expected:
 
-- `npm pack` creates `syntaxname-verdictci-0.1.0.tgz`;
+- `npm pack` creates `syntaxname-verdictci-<version>.tgz`;
 - package contents include `bin/verdictci.js`, `dist/index.js`, `README.md`, `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `SECURITY.md`;
 - package contents do not include `.tmp/`, `.omo/`, source-control metadata, local evidence, env files, raw secrets, generated result artifacts, workspace source packages, scripts, docs, examples, source maps, or TypeScript build info;
 - the tarball installs in a clean temporary project;
@@ -144,4 +150,4 @@ After the push:
 2. confirm issue templates appear in the new-issue flow;
 3. confirm the license is detected;
 4. confirm GitHub Actions start on the public repository;
-5. create a `v0.1.0` release only after the Action and manual CLI smoke checks pass.
+5. create versioned GitHub releases only after the Action and manual CLI smoke checks pass.
