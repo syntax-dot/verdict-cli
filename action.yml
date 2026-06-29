@@ -1,6 +1,10 @@
 name: VerdictCI
 description: Run VerdictCI evals and publish a GitHub Actions summary.
 
+branding:
+  icon: check-circle
+  color: green
+
 inputs:
   config:
     description: Path to verdictci.yaml or evals.yaml.
